@@ -88,15 +88,21 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border2);}
 .kpi.g::before{background:var(--green);} .kpi.a::before{background:var(--amber);}
 .kpi.r::before{background:var(--red);} .kpi.s::before{background:var(--slate);}
+.kpi.b::before{background:var(--blue);} .kpi.v::before{background:var(--violet);}
 .kpi .kl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:6px;}
 .kpi .kv{font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1;}
 .kpi .ks{font-size:10px;color:var(--text3);margin-top:5px;font-family:'DM Mono',monospace;}
 .kpi.g .kv{color:var(--green);} .kpi.a .kv{color:var(--amber);} .kpi.r .kv{color:var(--red);} .kpi.s .kv{color:var(--slate);}
+.kpi.b .kv{color:var(--blue);} .kpi.v .kv{color:var(--violet);}
 
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .ct{font-size:13px;font-weight:600;margin-bottom:4px;}
 .ct-sub{font-size:11px;color:var(--text3);margin-bottom:12px;}
 .chart-box{position:relative;height:240px;}
+.torre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;}
+.torre-ob{border:1px solid var(--border);border-radius:12px;padding:12px 12px 6px;background:var(--surface2);}
+.torre-ob-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;font-size:13px;}
+.torre-ob-h .tot{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);white-space:nowrap;}
 
 /* ranking de reincidências */
 .rank-row{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
@@ -127,10 +133,11 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .filters input,.filters select{min-height:42px;font-size:14px;padding:9px 10px;}
 
 .rec{padding:14px 16px;border-left:4px solid var(--border2);}
-.rec.st-Resolvido{border-left-color:var(--green);}
-.rec.st-Noprazo{border-left-color:var(--amber);}
-.rec.st-Atrasada{border-left-color:var(--red);}
-.rec.st-Semprazo{border-left-color:var(--slate);}
+.rec.st-Aberta{border-left-color:var(--blue);}
+.rec.st-EmTratativa{border-left-color:var(--amber);}
+.rec.st-Aguardando{border-left-color:var(--violet);}
+.rec.st-Atrasado{border-left-color:var(--red);}
+.rec.st-Resolvida{border-left-color:var(--green);}
 .rec-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
 .rec-id{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
 .rec-title{font-size:15px;font-weight:600;margin:2px 0 4px;}
@@ -153,6 +160,8 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .pill.a{background:var(--amber-l);color:var(--amber);}
 .pill.r{background:var(--red-l);color:var(--red);}
 .pill.s{background:var(--slate-l);color:var(--slate);border:1px dashed var(--slate);}
+.pill.b{background:var(--blue-l);color:var(--blue);}
+.pill.v{background:var(--violet-l);color:var(--violet);}
 .pill.tipo{background:var(--surface2);color:var(--text2);font-family:'DM Sans';font-weight:600;}
 
 .empty{text-align:center;padding:48px 20px;color:var(--text2);}
@@ -210,8 +219,8 @@ table.rep th,table.rep td{border:1px solid var(--border);padding:7px 9px;text-al
 table.rep th{background:#2f3a42;color:#fff;font-weight:600;white-space:nowrap;}
 table.rep tr:nth-child(even) td{background:#faf9f6;}
 table.rep .st{font-weight:700;white-space:nowrap;}
-table.rep .st-Resolvido{color:var(--green);} table.rep .st-Noprazo{color:var(--amber);}
-table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--slate);}
+table.rep .st-Aberta{color:var(--blue);} table.rep .st-EmTratativa{color:var(--amber);}
+table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(--red);} table.rep .st-Resolvida{color:var(--green);}
 .rep-foot{font-size:11px;color:var(--text3);margin-top:10px;}
 
 @media(max-width:680px){
@@ -274,27 +283,36 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
         <input id="f-dataId" type="date">
       </div>
       <div class="field">
-        <label>Obra</label>
-        <input id="f-obra" list="obra-list" placeholder="Ex.: Vila do Paraíso">
-        <datalist id="obra-list"></datalist>
+        <label>Obra <span class="req">*</span></label>
+        <select id="f-obra"><option value="">Selecione…</option></select>
+      </div>
+      <div class="field">
+        <label>Registrado por <span class="req">*</span></label>
+        <select id="f-registrado"><option value="">Selecione…</option></select>
       </div>
       <div class="field">
         <label>Torre</label>
-        <input id="f-torre" list="torre-list" placeholder="Ex.: Torre 5">
-        <datalist id="torre-list"></datalist>
+        <select id="f-torre"><option value="">Selecione…</option></select>
       </div>
       <div class="field">
-        <label>Pavimento / Apartamento</label>
-        <input id="f-pav" placeholder="Ex.: Pavimento 4 — Apt. 406">
+        <label>Pavimento</label>
+        <select id="f-pav-num"><option value="">Selecione…</option></select>
+      </div>
+      <div class="field">
+        <label>Apartamento</label>
+        <select id="f-apto"><option value="">—</option></select>
       </div>
       <div class="field">
         <label>Área externa</label>
-        <input id="f-area" list="area-list" placeholder="Ex.: Fachada, Piscina…">
-        <datalist id="area-list"></datalist>
+        <select id="f-area"><option value="">—</option></select>
       </div>
       <div class="field full">
         <label>Tipo de não conformidade <span class="req">*</span></label>
         <select id="f-tipo"></select>
+      </div>
+      <div class="field full">
+        <label>Serviço (PES) <span class="req">*</span></label>
+        <select id="f-servico"><option value="">Selecione o procedimento…</option></select>
       </div>
       <div class="field full">
         <label>Descrição da NC encontrada <span class="req">*</span></label>
@@ -315,9 +333,8 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
   <div class="card pad mb">
     <div class="grid">
       <div class="field">
-        <label>Responsável</label>
-        <input id="f-responsavel" list="resp-list" placeholder="Nome do responsável">
-        <datalist id="resp-list"></datalist>
+        <label>Responsável pela tratativa</label>
+        <select id="f-responsavel"><option value="">Selecione…</option></select>
       </div>
       <div class="field">
         <label>Telefone (WhatsApp) <span class="hint">DDD + número</span></label>
@@ -330,8 +347,10 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
       <div class="field">
         <label>Status <span class="req">*</span></label>
         <select id="f-status">
-          <option value="Pendente">Pendente</option>
-          <option value="Resolvido">Resolvido</option>
+          <option>Aberta</option>
+          <option>Em Tratativa</option>
+          <option>Aguardando Validação da Qualidade</option>
+          <option>Resolvida</option>
         </select>
       </div>
       <div class="field">
@@ -369,20 +388,36 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
 <section class="pg" id="dash">
   <div class="sec-eyebrow">Indicadores</div>
   <div class="kg mb">
-    <div class="kpi"><div class="kl">Total de NCs</div><div class="kv" id="k-total">0</div><div class="ks">no período carregado</div></div>
-    <div class="kpi a"><div class="kl">Pendentes</div><div class="kv" id="k-pend">0</div><div class="ks">aguardando correção</div></div>
+    <div class="kpi"><div class="kl">Total de NCs</div><div class="kv" id="k-total">0</div><div class="ks">registros carregados</div></div>
+    <div class="kpi b"><div class="kl">Abertas</div><div class="kv" id="k-aberta">0</div><div class="ks">aguardando tratativa</div></div>
+    <div class="kpi a"><div class="kl">Em tratativa</div><div class="kv" id="k-trat">0</div><div class="ks">em andamento</div></div>
+    <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv" id="k-aguard">0</div><div class="ks">com a Qualidade</div></div>
     <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv" id="k-resol">0</div><div class="ks" id="k-resol-s"></div></div>
     <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv" id="k-atr">0</div><div class="ks">prazo vencido</div></div>
+    <div class="kpi s"><div class="kl">Tempo médio de resolução</div><div class="kv" id="k-tmr">—</div><div class="ks">da abertura à resolução</div></div>
+    <div class="kpi b"><div class="kl">Resolução no prazo</div><div class="kv" id="k-prazo">—</div><div class="ks">resolvidas até o prazo</div></div>
+  </div>
+
+  <div class="card pad mb">
+    <div class="ct">NCs por status</div><div class="ct-sub">um gráfico separado por obra</div>
+    <div id="statusPorObra" class="torre-grid"></div>
+  </div>
+
+  <div class="card pad mb">
+    <div class="ct">NCs por responsável</div><div class="ct-sub">um gráfico separado por obra (resolvidas × em aberto)</div>
+    <div id="respPorObra" class="torre-grid"></div>
+  </div>
+
+  <div class="card pad mb"><div class="ct">NCs por obra</div><div class="ct-sub">total de não conformidades por obra</div><div class="chart-box"><canvas id="chObra"></canvas></div></div>
+
+  <div class="card pad mb">
+    <div class="ct">NCs por torre</div><div class="ct-sub">um gráfico separado por obra</div>
+    <div id="torrePorObra" class="torre-grid"></div>
   </div>
 
   <div class="g2 mb">
-    <div class="card pad"><div class="ct">NCs por status</div><div class="ct-sub">situação atual das não conformidades</div><div class="chart-box"><canvas id="chStatus"></canvas></div></div>
-    <div class="card pad"><div class="ct">NCs por responsável</div><div class="ct-sub">carga por responsável (resolvidas × pendentes)</div><div class="chart-box"><canvas id="chResp"></canvas></div></div>
-  </div>
-
-  <div class="g2 mb">
-    <div class="card pad"><div class="ct">NCs por torre</div><div class="ct-sub">distribuição por torre (identificada pelo campo Local)</div><div class="chart-box"><canvas id="chTorre"></canvas></div></div>
-    <div class="card pad"><div class="ct">NCs por obra</div><div class="ct-sub">total de não conformidades por obra</div><div class="chart-box"><canvas id="chObra"></canvas></div></div>
+    <div class="card pad"><div class="ct">Top 3 serviços com mais NCs</div><div class="ct-sub">procedimentos (PES) mais recorrentes</div><div id="top3Serv"></div></div>
+    <div class="card pad"><div class="ct">Top 3 responsáveis com mais NCs</div><div class="ct-sub">maior carga de não conformidades</div><div id="top3Resp"></div></div>
   </div>
 
   <div class="card pad mb">
@@ -412,9 +447,12 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
       <div class="field"><label>Pavimento / Apartamento contém</label><input id="ft-pav" placeholder="Ex.: Apt. 406"></div>
       <div class="field"><label>Área externa contém</label><input id="ft-area" placeholder="Ex.: Fachada"></div>
       <div class="field"><label>Responsável</label><select id="ft-resp"><option value="">Todos</option></select></div>
+      <div class="field"><label>Registrado por</label><select id="ft-registrado"><option value="">Todos</option></select></div>
       <div class="field"><label>Tipo de NC</label><select id="ft-tipo"><option value="">Todos</option></select></div>
+      <div class="field"><label>Serviço (PES)</label><select id="ft-servico"><option value="">Todos</option></select></div>
       <div class="field"><label>Status</label><select id="ft-status">
-        <option value="">Todos</option><option>Pendente</option><option>Resolvido</option><option value="Atrasada">Atrasadas</option>
+        <option value="">Todos</option><option>Aberta</option><option>Em Tratativa</option>
+        <option value="Aguardando">Aguardando validação</option><option value="Atrasado">Atrasadas</option><option>Resolvida</option>
       </select></div>
       <div class="field"><label>&nbsp;</label><button class="btn btn-ghost" id="ft-clear">Limpar filtros</button></div>
     </div>
@@ -459,7 +497,7 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
       <button class="btn btn-primary" id="btnObraSave">Salvar obra</button>
       <button class="btn btn-ghost" id="btnObraCancel" style="display:none">Cancelar edição</button>
     </div>
-    <div class="note" style="margin-top:14px">As obras e setores cadastrados aqui viram sugestões nos campos <b>Obra</b> e <b>Local</b> do formulário de NC.</div>
+    <div class="note" style="margin-top:14px">As obras cadastradas aqui aparecem na lista <b>Obra</b> do formulário de NC. As torres exibidas seguem a regra da obra (ex.: <b>UBC - Urban Candeias</b> mostra Torre A–F); para obras sem regra própria, são oferecidas Torre 1–8.</div>
   </div>
   <div class="sec-eyebrow">Obras / setores cadastrados <span id="obraCount" class="mono" style="text-transform:none;color:var(--text2)"></span></div>
   <div id="obraList"></div>
@@ -480,13 +518,17 @@ table.rep .st-Atrasada{color:var(--red);} table.rep .st-Semprazo{color:var(--sla
       <div class="field"><label>Pavimento / Apartamento contém</label><input id="rel-pav" placeholder="Ex.: Apt. 406"></div>
       <div class="field"><label>Área externa contém</label><input id="rel-area" placeholder="Ex.: Fachada"></div>
       <div class="field"><label>Responsável</label><select id="rel-resp"><option value="">Todos</option></select></div>
+      <div class="field"><label>Registrado por</label><select id="rel-registrado"><option value="">Todos</option></select></div>
       <div class="field"><label>Tipo de NC</label><select id="rel-tipo"><option value="">Todos</option></select></div>
+      <div class="field"><label>Serviço (PES)</label><select id="rel-servico"><option value="">Todos</option></select></div>
       <div class="field"><label>Situação</label><select id="rel-sit">
         <option value="">Todas</option>
-        <option value="No prazo">Dentro do prazo</option>
-        <option value="Atrasada">Atrasadas</option>
-        <option value="Resolvido">Resolvidas</option>
-        <option value="Sem prazo">Sem prazo</option>
+        <option>Aberta</option>
+        <option value="Em Tratativa">Em tratativa</option>
+        <option value="Aguardando">Aguardando validação</option>
+        <option value="no-prazo">Dentro do prazo</option>
+        <option value="Atrasado">Atrasadas</option>
+        <option value="Resolvida">Resolvidas</option>
       </select></div>
       <div class="field"><label>&nbsp;</label><button class="btn btn-ghost" id="rel-clear">Limpar filtros</button></div>
     </div>
@@ -639,6 +681,75 @@ const TIPOS = ['Falha no acompanhamento de FVS','Condições de início não res
 const TORRES_SUG = ['Torre 1','Torre 2','Torre 3','Torre 4','Torre 5','Torre 6','Torre 7','Torre 8'];
 const AREAS_SUG  = ['Calçada','Fachada','Piscina','Casa de gás','Central de resíduos','Estacionamento','Jardim','Área técnica'];
 
+/* Lista Mestra de Procedimentos (PES) — VL Construtora. Campo Serviço (obrigatório, sem digitação). */
+const SERVICOS = [
+'PES 001 - V4 - Compactação de aterro','PES 002 - V5 - Locação de obra',
+'PES 003.1 - V3 - Fundação direta - Radier protendido','PES 003.2 - V4 - Sapata corrida e isolada',
+'PES 003.3 - V2 - Fundação direta - Radier','PES 003.4 - V5 - Fundação direta - Radier com fibras',
+'PES 003.5 - V1 - Fundação em estaca pré-moldada de concreto','PES 004 - V6 - Laje falsa e rebaixo',
+'PES 005 - V5 - Forma e desforma','PES 006 - V4 - Montagem de armadura','PES 006.2 - V1 - Laje em treliça',
+'PES 006.3 - V0 - Execução de Laje maciça','PES 007 - V2 - Concretagem de peças estrutural',
+'PES 008 - V1 - Produção de concreto','PES 009.1 - V5 - Execução de alvenaria estrutural',
+'PES 009.2 - V10 - Estrutura em paredes e lajes de concreto - pré durante concretagem',
+'PES 009.3 - V1 - Estrutura em parede e lajes de concreto - Pós concretagem',
+'PES 010.1 - V4 - Execução de alvenaria não estrutural','PES 010.2 - V1 - Execução de alvenaria com bloco de gesso',
+'PES 011.1 - V3 - Execução de revestimento de paredes com argamassa','PES 011.2 - V4 - Execução de revestimento de parede',
+'PES 012 - V1 - Produção de argamassa','PES 013.1 - V6 - Revestimento cerâmico - piso e parede',
+'PES 013.2 - V1 - Revestimento em porcelanato','PES 014 - V8 - Execução de contrapiso',
+'PES 015 - V3 - Execução de muro com placa pré moldada','PES 016 - V1 - Moldagem de corpos de prova',
+'PES 017.1 - V2 - Estrutura de madeira para coberta','PES 017.2 - V3 - Estrutura metálica para coberta',
+'PES 018.1 - V6 - Impermeabilização com argamassa polimérica','PES 018.2 - V1 - Impermeabilização com manta asfáltica',
+'PES 018.3 - V4 - Impermeabilização com super manta líquida','PES 018.4 - V1 - Impermeabilização com manta aluminizada',
+'PES 019.1 - V4 - Cobertura em telha cerâmica','PES 019.2 - V5 - Cobertura com telha de fibrocimento',
+'PES 020 - V7 - Forro em placa de gesso','PES 021 - V6 - Instalação de esquadrias (parafusada)',
+'PES 022 - V6 - Colocação de porta pronta','PES 023.1 - V2 - Colocação de bancada',
+'PES 023.2 - V3 - Instalação de louças em metais hidrossanitários','PES 024.1 - V3 - Instalações elétricas',
+'PES 024.2 - V6 - Acabamento elétrico','PES 024.3 - V1 - Spda',
+'PES 025.1 - V11 - Instalações hidrossanitárias','PES 025.2 - V1 - Instalação de combate a fogo e incêndio',
+'PES 026.1 - V6 - Pintura interna','PES 026.2 - V3 - Execução de pintura externa',
+'PES 027 - V4 - Instalações de guarda corpo / gradil metálico','PES 028 - V5 - Drenagem de águas pluviais',
+'PES 029 - V4 - Rede de esgoto sanitário','PES 030 - V8 - Paredes em drywall',
+'PES 031 - V1 - Execução fechamento de shaft com eps','PES 032 - V4 - Vagas de garagem',
+'PES 033.1 - V1 - Muro de contenção de gabião','PES 033.2 - V0 - Muro de contenção em concreto armado',
+'PES 034 - V4 - Instalação de corrimão, escada tipo marinheiro e alçapão','PES 035 - V3 - Instalação de gás encanado',
+'PES 036 - V4 - Rede de abastecimento de água','PES 037.1 - V5 - Pavimentação em intertravados',
+'PES 037.2 - V1 - Pavimentação em paralelepípedos','PES 038.1 - V4 - Passeio em intertravados',
+'PES 038.2 - V3 - Passeio em concreto','PES 039 - V2 - Execução da calha da coberta',
+'PES 039.1 - V1 - Execução de estrutura expandida','PES 039.2 - V1 - Execução do chapim da platibanda',
+'PES 040 - V1 - Execução de infra - Enterrados','PES 041 - V5 - Caixa de ar',
+'PES 042 - V1 - Rede de alta e iluminação','PES 043 - V2 - Instalação cabos shaft e qdg_cdm',
+'PES 044 - V1 - Limpeza dos apartamentos','PES 045 - V1 - Execução de Terraplenagem',
+'PES 046 - V1 - Fabricação, Entrega e Aplicação de Kits'];
+
+/* Torres por obra (regras configuráveis). Chave = nome da obra; valor = lista de torres.
+   Para adicionar regras de outras obras no futuro, basta incluir aqui. */
+const TORRES_POR_OBRA = {
+  'UBC - Urban Candeias': ['Torre A','Torre B','Torre C','Torre D','Torre E','Torre F']
+};
+function torresDaObra(obra){
+  const o=(obra||'').trim();
+  if(TORRES_POR_OBRA[o]) return TORRES_POR_OBRA[o].slice();
+  // padrão: torres numéricas 1–8 + torres já usadas na própria obra
+  const usadas=[...new Set(STATE.records.filter(r=>(r.obra||'')===o).map(r=>torreOf(r)).filter(v=>v&&v!=='Sem torre'))];
+  return [...new Set([...TORRES_SUG, ...usadas])].sort((a,b)=>a.localeCompare(b,'pt',{numeric:true}));
+}
+
+/* Pavimento / Apartamento estruturado (monta "Pavimento 04 - Apto 406") */
+const PAVIMENTOS = ['Térreo','01','02','03','04','05','06','07','Coberta'];
+function apartamentosDoPav(pav){
+  if(!pav || pav==='Coberta') return [];
+  const base = pav==='Térreo' ? 0 : parseInt(pav,10);
+  const arr=[]; for(let n=1;n<=8;n++) arr.push(String(base*100+n).padStart(3,'0'));
+  return arr;
+}
+function pavLabel(pav){ if(!pav) return ''; if(pav==='Térreo'||pav==='Coberta') return pav; return 'Pavimento '+pav; }
+function compoePav(pav, apto){ const l=pavLabel(pav); if(l && apto) return `${l} - Apto ${apto}`; return l || apto || ''; }
+
+/* Fluxo de status: Aberta → Em Tratativa → Aguardando Validação da Qualidade → Resolvida.
+   "Atrasado" é situação calculada (prazo vencido e não resolvida). */
+const STATUS_LIST = ['Aberta','Em Tratativa','Aguardando Validação da Qualidade','Resolvida'];
+function normStatus(s){ if(!s||s==='Pendente') return 'Aberta'; if(s==='Resolvido') return 'Resolvida'; return s; }
+
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(16).slice(2));
@@ -653,12 +764,18 @@ const fmtBR = s => { if(!s) return '—'; const [y,m,d]=s.split('-'); return `${
 const startToday = () => { const d=new Date(); return new Date(d.getFullYear(),d.getMonth(),d.getDate()); };
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+function isOverdue(r){ return r.prazo && parseISO(r.prazo) < startToday(); }
 function situacao(r){
-  if(r.status === 'Resolvido') return 'Resolvido';
-  if(!r.prazo) return 'Sem prazo';
-  return parseISO(r.prazo) < startToday() ? 'Atrasada' : 'No prazo';
+  const st = normStatus(r.status);
+  if(st === 'Resolvida') return 'Resolvida';
+  if(st === 'Aguardando Validação da Qualidade') return 'Aguardando';
+  if(isOverdue(r)) return 'Atrasado';
+  return st; // 'Aberta' | 'Em Tratativa'
 }
-const SIT_META = {'Resolvido':{cls:'g',key:'Resolvido'},'No prazo':{cls:'a',key:'Noprazo'},'Atrasada':{cls:'r',key:'Atrasada'},'Sem prazo':{cls:'s',key:'Semprazo'}};
+const SIT_META = {
+  'Aberta':{cls:'b',key:'Aberta'}, 'Em Tratativa':{cls:'a',key:'EmTratativa'},
+  'Aguardando':{cls:'v',key:'Aguardando'}, 'Atrasado':{cls:'r',key:'Atrasado'}, 'Resolvida':{cls:'g',key:'Resolvida'}
+};
 
 let STATE = { records: [], team: [], obras: [], editingId: null, editingTeamId: null, editingObraId: null, confirmCb: null };
 
@@ -688,7 +805,9 @@ function waLink(r){
     `Pavimento/Apartamento: ${pavOf(r)||''}`,
     `Área externa: ${r.areaExterna||''}`,
     `Tipo de NC: ${r.tipo||''}`,
+    `Serviço: ${r.servico||''}`,
     `Descrição: ${r.descNC||''}`,
+    `Registrado por: ${r.registradoPor||''}`,
     `Prazo para correção: ${fmtBR(r.prazo)}`,
     'Favor verificar e realizar a tratativa dentro do prazo.'
   ];
@@ -735,38 +854,62 @@ function renderPhotoPreview(prevId, key){
 /* ---------------- formulário ---------------- */
 function initForm(){
   $('#f-tipo').innerHTML = '<option value="">Selecione…</option>' + TIPOS.map(t=>`<option>${t}</option>`).join('');
+  $('#f-servico').innerHTML = '<option value="">Selecione o procedimento…</option>' + SERVICOS.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('#f-area').innerHTML = '<option value="">—</option>' + AREAS_SUG.map(a=>`<option>${esc(a)}</option>`).join('');
+  $('#f-pav-num').innerHTML = '<option value="">Selecione…</option>' + PAVIMENTOS.map(p=>`<option>${p}</option>`).join('');
   $('#f-dataId').value = todayISO();
   $('#f-item').value = nextItemNumber();
   bindPhoto('f-fotoNC','fotoNC','prev-fotoNC');
   bindPhoto('f-fotoCorr','fotoCorr','prev-fotoCorr');
-  $('#f-responsavel').addEventListener('input', e => { const m = findResp(e.target.value); if(m) $('#f-responsavelTel').value = m.tel; });
+  // obra define as torres disponíveis
+  $('#f-obra').addEventListener('change', () => fillTorreSelect($('#f-obra').value, $('#f-torre').value));
+  // pavimento define os apartamentos
+  $('#f-pav-num').addEventListener('change', () => fillAptoSelect($('#f-pav-num').value, ''));
+  // responsável preenche o telefone
+  $('#f-responsavel').addEventListener('change', e => { const m = findResp(e.target.value); $('#f-responsavelTel').value = m ? m.tel : ''; });
   $('#btnSave').onclick = saveRecord;
   $('#btnClear').onclick = () => clearForm(true);
   $('#btnCancel').onclick = () => clearForm(true);
 }
+function fillTorreSelect(obra, sel){
+  const list = torresDaObra(obra);
+  $('#f-torre').innerHTML = '<option value="">Selecione…</option>' + list.map(t=>`<option ${t===sel?'selected':''}>${esc(t)}</option>`).join('');
+  if(sel && !list.includes(sel)) $('#f-torre').insertAdjacentHTML('beforeend', `<option selected>${esc(sel)}</option>`);
+}
+function fillAptoSelect(pav, sel){
+  const list = apartamentosDoPav(pav);
+  $('#f-apto').innerHTML = '<option value="">—</option>' + list.map(a=>`<option ${a===sel?'selected':''}>${a}</option>`).join('');
+}
 function clearForm(){
-  ['f-obra','f-torre','f-pav','f-area','f-descNC','f-responsavel','f-responsavelTel','f-descCorr','f-obs','f-dataRes','f-prazo'].forEach(id=>$('#'+id).value='');
-  $('#f-tipo').value=''; $('#f-status').value='Pendente'; $('#f-dataId').value=todayISO(); $('#f-item').value=nextItemNumber();
+  ['f-obra','f-registrado','f-torre','f-pav-num','f-apto','f-area','f-servico','f-descNC','f-responsavel','f-responsavelTel','f-descCorr','f-obs','f-dataRes','f-prazo'].forEach(id=>{ const el=$('#'+id); if(el) el.value=''; });
+  $('#f-tipo').value=''; $('#f-status').value='Aberta'; $('#f-dataId').value=todayISO(); $('#f-item').value=nextItemNumber();
+  fillAptoSelect('', ''); fillTorreSelect('', '');
   photos.fotoNC=null; photos.fotoCorr=null; renderPhotoPreview('prev-fotoNC','fotoNC'); renderPhotoPreview('prev-fotoCorr','fotoCorr');
   STATE.editingId=null; $('#formTitle').textContent='Registrar não conformidade';
   $('#btnSave').textContent='Salvar registro'; $('#btnCancel').style.display='none';
 }
 async function saveRecord(){
-  const dataId=$('#f-dataId').value, tipo=$('#f-tipo').value, descNC=$('#f-descNC').value.trim(), status=$('#f-status').value;
+  const dataId=$('#f-dataId').value, obra=$('#f-obra').value, tipo=$('#f-tipo').value,
+        servico=$('#f-servico').value, registradoPor=$('#f-registrado').value,
+        descNC=$('#f-descNC').value.trim(), status=$('#f-status').value;
   if(!dataId){ toast('Informe a data da identificação.','err'); return; }
+  if(!obra){ toast('Selecione a obra.','err'); return; }
   if(!tipo){ toast('Selecione o tipo de não conformidade.','err'); return; }
+  if(!servico){ toast('Selecione o serviço (PES).','err'); return; }
   if(!descNC){ toast('Descreva a NC encontrada.','err'); return; }
+  if(!registradoPor){ toast('Informe quem registrou a NC.','err'); return; }
   const now = new Date().toISOString();
   const existing = STATE.editingId ? STATE.records.find(r=>r.id===STATE.editingId) : null;
-  // Item é sequencial e automático (ordem de criação). Não é digitado.
   const item = existing && existing.item ? existing.item : nextItemNumber();
+  let pav = compoePav($('#f-pav-num').value, $('#f-apto').value);
+  if(!pav && existing) pav = existing.pavimentoApartamento || existing.local || ''; // mantém dado antigo na edição
   const rec = {
     id: STATE.editingId || uuid(),
-    item, dataId, obra:$('#f-obra').value.trim(),
-    torre:$('#f-torre').value.trim(), pavimentoApartamento:$('#f-pav').value.trim(), areaExterna:$('#f-area').value.trim(),
-    local:'', // legado migrado para Pavimento/Apartamento; mantido (vazio) só p/ compatibilidade da coluna
-    tipo, descNC,
-    fotoNC: photos.fotoNC, responsavel:$('#f-responsavel').value.trim(), responsavelTel:$('#f-responsavelTel').value.trim(),
+    item, dataId, obra,
+    torre:$('#f-torre').value, pavimentoApartamento:pav, areaExterna:$('#f-area').value,
+    local:'',
+    tipo, servico, registradoPor, descNC,
+    fotoNC: photos.fotoNC, responsavel:$('#f-responsavel').value, responsavelTel:$('#f-responsavelTel').value.trim(),
     prazo:$('#f-prazo').value, status, dataRes:$('#f-dataRes').value, descCorr:$('#f-descCorr').value.trim(),
     fotoCorr: photos.fotoCorr, obs:$('#f-obs').value.trim(),
     criadoEm: existing ? existing.criadoEm : now, atualizadoEm: now
@@ -780,9 +923,18 @@ function editRecord(id){
   const r = STATE.records.find(x=>x.id===id); if(!r) return;
   STATE.editingId = id;
   $('#f-item').value=r.item??''; $('#f-dataId').value=r.dataId||''; $('#f-obra').value=r.obra||'';
-  $('#f-torre').value=r.torre||''; $('#f-pav').value=pavOf(r); $('#f-area').value=r.areaExterna||'';
-  $('#f-tipo').value=r.tipo||''; $('#f-descNC').value=r.descNC||''; $('#f-responsavel').value=r.responsavel||''; $('#f-responsavelTel').value=r.responsavelTel||'';
-  $('#f-prazo').value=r.prazo||''; $('#f-status').value=r.status||'Pendente'; $('#f-dataRes').value=r.dataRes||'';
+  $('#f-registrado').value=r.registradoPor||''; $('#f-servico').value=r.servico||'';
+  fillTorreSelect(r.obra||'', r.torre||'');
+  // tenta decompor "Pavimento 04 - Apto 406" nos selects; se não der, mantém o texto ao salvar
+  const pavTxt = pavOf(r); let pavNum='', apto='';
+  let m = pavTxt.match(/pavimento\s*(\d{1,2})/i); if(m) pavNum = m[1].padStart(2,'0');
+  else if(/térreo|terreo/i.test(pavTxt)) pavNum='Térreo'; else if(/coberta/i.test(pavTxt)) pavNum='Coberta';
+  m = pavTxt.match(/ap(?:to|t)?\.?\s*(\d{3})/i); if(m) apto=m[1];
+  $('#f-pav-num').value = PAVIMENTOS.includes(pavNum)?pavNum:''; fillAptoSelect($('#f-pav-num').value, apto);
+  $('#f-area').value=r.areaExterna||'';
+  $('#f-tipo').value=r.tipo||''; $('#f-descNC').value=r.descNC||'';
+  $('#f-responsavel').value=r.responsavel||''; $('#f-responsavelTel').value=r.responsavelTel||'';
+  $('#f-prazo').value=r.prazo||''; $('#f-status').value=normStatus(r.status); $('#f-dataRes').value=r.dataRes||'';
   $('#f-descCorr').value=r.descCorr||''; $('#f-obs').value=r.obs||'';
   photos.fotoNC=r.fotoNC||null; photos.fotoCorr=r.fotoCorr||null;
   renderPhotoPreview('prev-fotoNC','fotoNC'); renderPhotoPreview('prev-fotoCorr','fotoCorr');
@@ -808,7 +960,7 @@ function askDelete(id){
 function getFiltered(){
   const de=$('#ft-de').value, ate=$('#ft-ate').value, obra=$('#ft-obra').value,
         torre=$('#ft-torre').value, pav=$('#ft-pav').value.trim().toLowerCase(), area=$('#ft-area').value.trim().toLowerCase(),
-        resp=$('#ft-resp').value, tipo=$('#ft-tipo').value, st=$('#ft-status').value;
+        resp=$('#ft-resp').value, reg=$('#ft-registrado').value, tipo=$('#ft-tipo').value, serv=$('#ft-servico').value, st=$('#ft-status').value;
   return STATE.records.filter(r=>{
     if(de && (!r.dataId || r.dataId < de)) return false;
     if(ate && (!r.dataId || r.dataId > ate)) return false;
@@ -817,9 +969,10 @@ function getFiltered(){
     if(pav && !(pavOf(r).toLowerCase().includes(pav))) return false;
     if(area && !((r.areaExterna||'').toLowerCase().includes(area))) return false;
     if(resp && r.responsavel !== resp) return false;
+    if(reg && r.registradoPor !== reg) return false;
     if(tipo && r.tipo !== tipo) return false;
-    if(st === 'Atrasada'){ if(situacao(r)!=='Atrasada') return false; }
-    else if(st && r.status !== st) return false;
+    if(serv && r.servico !== serv) return false;
+    if(st && situacao(r) !== st) return false;
     return true;
   }).sort((a,b)=> (b.dataId||'').localeCompare(a.dataId||'') || (b.criadoEm||'').localeCompare(a.criadoEm||''));
 }
@@ -847,16 +1000,18 @@ function renderList(){
           <div class="rec-title">${esc(r.descNC)}</div>
           <div><span class="pill tipo">${esc(r.tipo)}</span></div>
         </div>
-        <span class="pill ${m.cls}">${sit}</span>
+        <span class="pill ${m.cls}">${SITLABEL[sit]||sit}</span>
       </div>
       <div class="rec-meta">
         ${r.obra?`<span>🏗 Obra: <b>${esc(r.obra)}</b></span>`:''}
         ${torreOf(r)?`<span>🏢 Torre: <b>${esc(torreOf(r))}</b></span>`:''}
         ${pavOf(r)?`<span>📍 Pav./Apto.: <b>${esc(pavOf(r))}</b></span>`:''}
         ${r.areaExterna?`<span>🌳 Área externa: <b>${esc(r.areaExterna)}</b></span>`:''}
-        ${r.responsavel?`<span>👤 <b>${esc(r.responsavel)}</b></span>`:''}
+        ${r.servico?`<span>🛠 Serviço: <b>${esc(r.servico)}</b></span>`:''}
+        ${r.responsavel?`<span>👤 Resp.: <b>${esc(r.responsavel)}</b></span>`:''}
+        ${r.registradoPor?`<span>📝 Registrado por: <b>${esc(r.registradoPor)}</b></span>`:''}
         <span>⏱ Prazo: <b>${fmtBR(r.prazo)}</b></span>
-        ${r.status==='Resolvido'?`<span>✓ Resolvido em <b>${fmtBR(r.dataRes)}</b></span>`:''}
+        ${normStatus(r.status)==='Resolvida'?`<span>✓ Resolvida em <b>${fmtBR(r.dataRes)}</b></span>`:''}
       </div>
       <div class="reinc-line">↻ Reincidência deste tipo: ${occ}ª ocorrência ${tot>1?`<span class="muted">de ${tot}</span>`:''}</div>
       ${r.descCorr?`<div class="rec-desc"><b>Correção:</b> ${esc(r.descCorr)}</div>`:''}
@@ -871,51 +1026,121 @@ function renderList(){
   }).join('');
   box.querySelectorAll('img[data-img]').forEach(im=> im.onclick=()=>openLightbox(im.dataset.img));
 }
-function clearFilters(){ ['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-tipo','ft-status'].forEach(id=>$('#'+id).value=''); renderList(); }
+function clearFilters(){ ['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).value=''); renderList(); }
 
 /* ---------------- painel ---------------- */
 let charts = {};
 function renderDashboard(){
   const recs = STATE.records;
-  const total=recs.length, pend=recs.filter(r=>r.status==='Pendente').length,
-        resol=recs.filter(r=>r.status==='Resolvido').length, atr=recs.filter(r=>situacao(r)==='Atrasada').length;
-  $('#k-total').textContent=total; $('#k-pend').textContent=pend; $('#k-resol').textContent=resol; $('#k-atr').textContent=atr;
+  const total=recs.length;
+  const cnt = s => recs.filter(r=>situacao(r)===s).length;
+  const aberta=cnt('Aberta'), trat=cnt('Em Tratativa'), aguard=cnt('Aguardando'), atr=cnt('Atrasado');
+  const resol=recs.filter(r=>normStatus(r.status)==='Resolvida').length;
+  $('#k-total').textContent=total; $('#k-aberta').textContent=aberta; $('#k-trat').textContent=trat;
+  $('#k-aguard').textContent=aguard; $('#k-resol').textContent=resol; $('#k-atr').textContent=atr;
   $('#k-resol-s').textContent = total ? Math.round(resol/total*100)+'% do total' : '';
-  renderReincRank(recs);
-  renderTop3Geral(recs);
-  renderObraTop3(recs);
+  // tempo médio de resolução (dias) e índice de resolução no prazo
+  const resolvidas = recs.filter(r=>normStatus(r.status)==='Resolvida' && r.dataId && r.dataRes);
+  if(resolvidas.length){
+    const dias = resolvidas.map(r=>Math.max(0,Math.round((parseISO(r.dataRes)-parseISO(r.dataId))/86400000)));
+    const media = dias.reduce((a,b)=>a+b,0)/dias.length;
+    $('#k-tmr').textContent = media.toFixed(1).replace('.',',')+' dias';
+    const comPrazo = resolvidas.filter(r=>r.prazo);
+    if(comPrazo.length){ const noPrazo=comPrazo.filter(r=>parseISO(r.dataRes)<=parseISO(r.prazo)).length;
+      $('#k-prazo').textContent = Math.round(noPrazo/comPrazo.length*100)+'%'; } else $('#k-prazo').textContent='—';
+  } else { $('#k-tmr').textContent='—'; $('#k-prazo').textContent='—'; }
+
+  renderReincRank(recs); renderTop3Geral(recs); renderTop3Serv(recs); renderTop3Resp(recs); renderObraTop3(recs);
   $('#dashEmpty').innerHTML = total ? '' :
     `<div class="card pad"><div class="empty"><h3>Sem dados para o painel</h3><p>Registre NCs para ver os indicadores e gráficos.</p><button class="btn btn-primary" onclick="go('form')">Registrar NC</button> <button class="btn btn-ghost" id="seedBtn2" style="margin-left:8px">Carregar exemplos</button></div></div>`;
   if(!total){ if($('#seedBtn2')) $('#seedBtn2').onclick=seedExamples; Object.values(charts).forEach(c=>c&&c.destroy()); charts={}; return; }
 
-  const C={red:'#bf2e2e',amber:'#e08818',green:'#2a6735',greenM:'#469958',blue:'#4678cc',slate:'#5f6b78',txt:'#6a6860',grid:'rgba(0,0,0,.08)'};
+  const C={red:'#bf2e2e',amber:'#e08818',green:'#2a6735',greenM:'#469958',blue:'#4678cc',blueD:'#1850a0',violet:'#7a2bbf',slate:'#5f6b78',txt:'#6a6860',grid:'rgba(0,0,0,.08)'};
   Chart.defaults.font.family="'DM Sans',sans-serif"; Chart.defaults.color=C.txt;
 
-  const sitCount={'Resolvido':resol,'No prazo':recs.filter(r=>situacao(r)==='No prazo').length,'Atrasada':atr,'Sem prazo':recs.filter(r=>situacao(r)==='Sem prazo').length};
-  mkChart('chStatus',{type:'doughnut',
-    data:{labels:Object.keys(sitCount),datasets:[{data:Object.values(sitCount),backgroundColor:[C.green,C.amber,C.red,C.slate],borderWidth:0,hoverOffset:6}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:9,font:{size:11}}}}}});
+  // NCs por status e por responsável — um gráfico separado por obra
+  renderStatusPorObra(recs, C);
+  renderRespPorObra(recs, C);
 
-  const respCount=countBy(recs,'responsavel',true).sort((a,b)=>b[1]-a[1]);
-  mkChart('chResp',{type:'bar',
-    data:{labels:respCount.map(x=>x[0]),datasets:[
-      {label:'Resolvidas',data:respCount.map(x=>x[2].Resolvido||0),backgroundColor:C.greenM,borderRadius:3,stack:'s'},
-      {label:'Pendentes',data:respCount.map(x=>x[2].Pendente||0),backgroundColor:C.amber,borderRadius:3,stack:'s'},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{position:'top',labels:{boxWidth:11,font:{size:11}}}},
-      scales:{x:{stacked:true,grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{stacked:true,grid:{display:false},ticks:{font:{size:11}}}}}});
-
-  const torreCount=tally(recs,r=>torreOf(r));
-  mkChart('chTorre',{type:'bar',
-    data:{labels:torreCount.map(x=>x[0]),datasets:[{data:torreCount.map(x=>x[1]),backgroundColor:C.blue,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}}}}});
+  // NCs por torre — um gráfico separado por obra
+  renderTorrePorObra(recs, C);
 
   const obraCount=tally(recs,r=>r.obra||'(sem obra)');
   mkChart('chObra',{type:'bar',
     data:{labels:obraCount.map(x=>x[0]),datasets:[{data:obraCount.map(x=>x[1]),backgroundColor:C.green,borderRadius:4}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
       scales:{x:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+}
+function renderStatusPorObra(recs, C){
+  const box=$('#statusPorObra'); if(!box) return;
+  Object.keys(charts).forEach(id=>{ if(id.indexOf('chStatus_')===0){ charts[id].destroy(); delete charts[id]; } });
+  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
+  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
+  box.innerHTML = ordered.map(([o,arr],i)=>
+    `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
+      <div class="chart-box" style="height:230px"><canvas id="chStatus_${i}"></canvas></div></div>`).join('');
+  ordered.forEach(([o,arr],i)=>{
+    const c = s => arr.filter(r=>situacao(r)===s).length;
+    const dataArr=[c('Aberta'),c('Em Tratativa'),c('Aguardando'),c('Atrasado'),arr.filter(r=>normStatus(r.status)==='Resolvida').length];
+    mkChart('chStatus_'+i,{type:'doughnut',
+      data:{labels:['Abertas','Em tratativa','Aguardando validação','Atrasadas','Resolvidas'],
+        datasets:[{data:dataArr,backgroundColor:[C.blue,C.amber,C.violet,C.red,C.green],borderWidth:0,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:7,font:{size:10}}}}}});
+  });
+}
+function renderRespPorObra(recs, C){
+  const box=$('#respPorObra'); if(!box) return;
+  Object.keys(charts).forEach(id=>{ if(id.indexOf('chResp_')===0){ charts[id].destroy(); delete charts[id]; } });
+  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
+  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
+  box.innerHTML = ordered.map(([o,arr],i)=>{
+    const nResp=new Set(arr.map(r=>r.responsavel||'(não informado)')).size;
+    const h=Math.max(140, nResp*30+44);
+    return `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
+      <div class="chart-box" style="height:${h}px"><canvas id="chResp_${i}"></canvas></div></div>`;
+  }).join('');
+  ordered.forEach(([o,arr],i)=>{
+    const m={}; arr.forEach(r=>{ const k=r.responsavel||'(não informado)'; if(!m[k])m[k]={resol:0,aberto:0};
+      if(normStatus(r.status)==='Resolvida') m[k].resol++; else m[k].aberto++; });
+    const a=Object.entries(m).sort((x,y)=>(y[1].resol+y[1].aberto)-(x[1].resol+x[1].aberto));
+    mkChart('chResp_'+i,{type:'bar',
+      data:{labels:a.map(x=>x[0]),datasets:[
+        {label:'Resolvidas',data:a.map(x=>x[1].resol),backgroundColor:C.greenM,borderRadius:3,stack:'s'},
+        {label:'Em aberto',data:a.map(x=>x[1].aberto),backgroundColor:C.amber,borderRadius:3,stack:'s'}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},
+        scales:{x:{stacked:true,grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
+  });
+}
+function renderTorrePorObra(recs, C){
+  const box=$('#torrePorObra'); if(!box) return;
+  // destrói gráficos de torre da renderização anterior
+  Object.keys(charts).forEach(id=>{ if(id.indexOf('chTorre_')===0){ charts[id].destroy(); delete charts[id]; } });
+  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
+  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
+  box.innerHTML = ordered.map(([o,arr],i)=>{
+    const n=tally(arr,r=>torreOf(r)).length;
+    const h=Math.max(120, n*32+30);
+    return `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
+      <div class="chart-box" style="height:${h}px"><canvas id="chTorre_${i}"></canvas></div></div>`;
+  }).join('');
+  ordered.forEach(([o,arr],i)=>{
+    const t=tally(arr,r=>torreOf(r));
+    mkChart('chTorre_'+i,{type:'bar',
+      data:{labels:t.map(x=>x[0]),datasets:[{data:t.map(x=>x[1]),backgroundColor:C.blue,borderRadius:4}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{x:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  });
+}
+function renderTop3Serv(recs){
+  const box=$('#top3Serv'); if(!box) return;
+  const top=tally(recs.filter(r=>r.servico),r=>r.servico).slice(0,3);
+  box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem serviços informados.</p>';
+}
+function renderTop3Resp(recs){
+  const box=$('#top3Resp'); if(!box) return;
+  const top=tally(recs.filter(r=>r.responsavel),r=>r.responsavel).slice(0,3);
+  box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem responsáveis informados.</p>';
 }
 function renderReincRank(recs){
   const box=$('#reincRank');
@@ -969,7 +1194,7 @@ function countBy(arr,key,withStatus){
 }
 
 /* ---------------- exportar ---------------- */
-const SITLABEL = {'Resolvido':'Resolvida','No prazo':'Dentro do prazo','Atrasada':'Atrasada','Sem prazo':'Sem prazo'};
+const SITLABEL = {'Aberta':'Aberta','Em Tratativa':'Em tratativa','Aguardando':'Aguardando validação','Atrasado':'Atrasada','Resolvida':'Resolvida'};
 
 function rowsForExport(records){
   const recs = records || getFiltered();
@@ -982,12 +1207,14 @@ function rowsForExport(records){
     'Pavimento / Apartamento': pavOf(r),
     'Área externa': r.areaExterna||'',
     'Tipo de NC': r.tipo||'',
+    'Serviço (PES)': r.servico||'',
     'Descrição da NC': r.descNC||'',
+    'Registrado por': r.registradoPor||'',
     'Foto NC': r.fotoNC?'Sim':'Não',
     'Responsável': r.responsavel||'',
     'Telefone': r.responsavelTel||'',
     'Prazo': fmtBR(r.prazo),
-    'Status': r.status||'',
+    'Status': normStatus(r.status),
     'Situação': SITLABEL[situacao(r)]||situacao(r),
     'Data resolução': fmtBR(r.dataRes),
     'Descrição da correção': r.descCorr||'',
@@ -1007,10 +1234,12 @@ function relRowsForExport(records){
     'Pavimento / Apartamento': pavOf(r),
     'Área externa': r.areaExterna||'',
     'Tipo de NC': r.tipo||'',
+    'Serviço (PES)': r.servico||'',
     'Descrição da NC': r.descNC||'',
+    'Registrado por': r.registradoPor||'',
     'Responsável': r.responsavel||'',
     'Prazo': fmtBR(r.prazo),
-    'Status': r.status||'',
+    'Status': normStatus(r.status),
     'Situação': SITLABEL[situacao(r)]||situacao(r),
     'Data da resolução': fmtBR(r.dataRes),
     'Descrição da correção': r.descCorr||'',
@@ -1039,35 +1268,35 @@ function download(blob,name){ const u=URL.createObjectURL(blob),a=document.creat
 function refreshSelectors(){
   const baseNomes = STATE.team.map(r=>r.nome);
   const resps=[...new Set([...baseNomes, ...STATE.records.map(r=>r.responsavel).filter(Boolean)])].sort();
-  $('#resp-list').innerHTML = resps.map(r=>`<option value="${esc(r)}">`).join('');
-  $('#ft-resp').innerHTML = '<option value="">Todos</option>'+resps.map(r=>`<option>${esc(r)}</option>`).join('');
-  $('#ft-tipo').innerHTML = '<option value="">Todos</option>'+TIPOS.map(t=>`<option>${t}</option>`).join('');
-  const obras=[...new Set([...STATE.obras.map(o=>o.obra), ...STATE.records.map(r=>r.obra)].filter(Boolean))].sort();
-  $('#obra-list').innerHTML = obras.map(o=>`<option value="${esc(o)}">`).join('');
-  const cur=$('#ft-obra').value;
-  $('#ft-obra').innerHTML = '<option value="">Todas</option>'+obras.map(o=>`<option ${o===cur?'selected':''}>${esc(o)}</option>`).join('');
-  // datalists do formulário (torre e área externa) — sugestões + valores já usados
-  const torres=[...new Set([...TORRES_SUG, ...STATE.records.map(r=>torreOf(r))].filter(v=>v&&v!=='Sem torre'))]
+  const registrantes=[...new Set([...baseNomes, ...STATE.records.map(r=>r.registradoPor).filter(Boolean)])].sort();
+  const obras=[...new Set([...STATE.obras.map(o=>o.obra), ...STATE.records.map(r=>r.obra), ...Object.keys(TORRES_POR_OBRA)].filter(Boolean))].sort();
+  const servicosUsados=[...new Set([...SERVICOS, ...STATE.records.map(r=>r.servico).filter(Boolean)])];
+  const torres=[...new Set([...TORRES_SUG, ...Object.values(TORRES_POR_OBRA).flat(), ...STATE.records.map(r=>torreOf(r))].filter(v=>v&&v!=='Sem torre'))]
     .sort((a,b)=>a.localeCompare(b,'pt',{numeric:true}));
-  const areas=[...new Set([...AREAS_SUG, ...STATE.records.map(r=>r.areaExterna).filter(Boolean)])].sort();
-  if($('#torre-list')) $('#torre-list').innerHTML = torres.map(t=>`<option value="${esc(t)}">`).join('');
-  if($('#area-list'))  $('#area-list').innerHTML  = areas.map(a=>`<option value="${esc(a)}">`).join('');
-  // select de Torre nos filtros (Registros)
-  if($('#ft-torre')){
-    const ct=$('#ft-torre').value;
-    $('#ft-torre').innerHTML='<option value="">Todas</option>'+torres.map(t=>`<option ${t===ct?'selected':''}>${esc(t)}</option>`).join('');
-  }
-  // selects da aba Relatórios
-  if($('#rel-resp')){
-    const rr=$('#rel-resp').value;
-    $('#rel-resp').innerHTML='<option value="">Todos</option>'+resps.map(r=>`<option ${r===rr?'selected':''}>${esc(r)}</option>`).join('');
-    const rt=$('#rel-tipo').value;
-    $('#rel-tipo').innerHTML='<option value="">Todos</option>'+TIPOS.map(t=>`<option ${t===rt?'selected':''}>${t}</option>`).join('');
-    const ro=$('#rel-obra').value;
-    $('#rel-obra').innerHTML='<option value="">Todas</option>'+obras.map(o=>`<option ${o===ro?'selected':''}>${esc(o)}</option>`).join('');
-    const rtr=$('#rel-torre').value;
-    $('#rel-torre').innerHTML='<option value="">Todas</option>'+torres.map(t=>`<option ${t===rtr?'selected':''}>${esc(t)}</option>`).join('');
-  }
+  const opt = (arr, cur) => arr.map(v=>`<option ${v===cur?'selected':''}>${esc(v)}</option>`).join('');
+  const setSel = (id, arr, placeholder='') => { const el=$('#'+id); if(!el) return; const cur=el.value; el.innerHTML=`<option value="">${placeholder}</option>`+opt(arr,cur); };
+
+  // formulário
+  setSel('f-obra', obras, 'Selecione…');
+  setSel('f-responsavel', resps, 'Selecione…');
+  setSel('f-registrado', registrantes, 'Selecione…');
+  // (f-torre é populado conforme a obra; f-servico, f-tipo, f-area são fixos no initForm)
+
+  // filtros — Registros
+  setSel('ft-obra', obras, 'Todas');
+  setSel('ft-torre', torres, 'Todas');
+  setSel('ft-resp', resps, 'Todos');
+  setSel('ft-registrado', registrantes, 'Todos');
+  setSel('ft-tipo', TIPOS, 'Todos');
+  setSel('ft-servico', servicosUsados, 'Todos');
+
+  // filtros — Relatórios
+  setSel('rel-obra', obras, 'Todas');
+  setSel('rel-torre', torres, 'Todas');
+  setSel('rel-resp', resps, 'Todos');
+  setSel('rel-registrado', registrantes, 'Todos');
+  setSel('rel-tipo', TIPOS, 'Todos');
+  setSel('rel-servico', servicosUsados, 'Todos');
 }
 
 /* ---------------- navegação ---------------- */
@@ -1085,25 +1314,30 @@ function go(tab){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $$('.nt').forEach(b=> b.onclick=()=>go(b.dataset.tab));
-['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-tipo','ft-status'].forEach(id=>$('#'+id).addEventListener('input',renderList));
+['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).addEventListener('input',renderList));
 $('#ft-clear').onclick=clearFilters;
 
 /* ---------------- relatórios ---------------- */
 function relFiltered(){
-  const de=$('#rel-de').value, ate=$('#rel-ate').value, tipo=$('#rel-tipo').value,
-        resp=$('#rel-resp').value, obra=$('#rel-obra').value, torre=$('#rel-torre').value,
+  const de=$('#rel-de').value, ate=$('#rel-ate').value, tipo=$('#rel-tipo').value, serv=$('#rel-servico').value,
+        resp=$('#rel-resp').value, reg=$('#rel-registrado').value, obra=$('#rel-obra').value, torre=$('#rel-torre').value,
         pav=$('#rel-pav').value.trim().toLowerCase(), area=$('#rel-area').value.trim().toLowerCase(),
         sit=$('#rel-sit').value;
   return STATE.records.filter(r=>{
     if(de && (!r.dataId || r.dataId<de)) return false;
     if(ate && (!r.dataId || r.dataId>ate)) return false;
     if(tipo && r.tipo!==tipo) return false;
+    if(serv && r.servico!==serv) return false;
     if(resp && r.responsavel!==resp) return false;
+    if(reg && r.registradoPor!==reg) return false;
     if(obra && r.obra!==obra) return false;
     if(torre && torreOf(r)!==torre) return false;
     if(pav && !(pavOf(r).toLowerCase().includes(pav))) return false;
     if(area && !((r.areaExterna||'').toLowerCase().includes(area))) return false;
-    if(sit && situacao(r)!==sit) return false;
+    if(sit){
+      if(sit==='no-prazo'){ if(normStatus(r.status)==='Resolvida' || isOverdue(r)) return false; }
+      else if(situacao(r)!==sit) return false;
+    }
     return true;
   }).sort((a,b)=> (b.dataId||'').localeCompare(a.dataId||'') || (b.criadoEm||'').localeCompare(a.criadoEm||''));
 }
@@ -1115,17 +1349,18 @@ function describeFilters(){
   if(v('rel-pav')) p.push('Pav./Apto.: '+v('rel-pav'));
   if(v('rel-area')) p.push('Área externa: '+v('rel-area'));
   if(v('rel-resp')) p.push('Responsável: '+v('rel-resp'));
+  if(v('rel-registrado')) p.push('Registrado por: '+v('rel-registrado'));
   if(v('rel-tipo')) p.push('Tipo: '+v('rel-tipo'));
-  if(v('rel-sit')) p.push('Situação: '+(SITLABEL[v('rel-sit')]||v('rel-sit')));
+  if(v('rel-servico')) p.push('Serviço: '+v('rel-servico'));
+  if(v('rel-sit')){ const s=v('rel-sit'); p.push('Situação: '+(s==='no-prazo'?'Dentro do prazo':(SITLABEL[s]||s))); }
   return p.length ? p.join('  ·  ') : 'Todos os registros';
 }
 function renderReport(){
   const rows=relFiltered();
   const total=rows.length;
-  const pend=rows.filter(r=>r.status==='Pendente').length;
-  const resol=rows.filter(r=>r.status==='Resolvido').length;
-  const atr=rows.filter(r=>situacao(r)==='Atrasada').length;
-  const noprazo=rows.filter(r=>situacao(r)==='No prazo').length;
+  const cnt = s => rows.filter(r=>situacao(r)===s).length;
+  const aberta=cnt('Aberta'), trat=cnt('Em Tratativa'), aguard=cnt('Aguardando'), atr=cnt('Atrasado');
+  const resol=rows.filter(r=>normStatus(r.status)==='Resolvida').length;
   $('#relPrintMeta').textContent = describeFilters() + '  ·  Gerado em ' + fmtBR(todayISO());
 
   if(!total){
@@ -1134,28 +1369,32 @@ function renderReport(){
   }
   const kpis = `<div class="kg mb">
     <div class="kpi"><div class="kl">Total de NCs</div><div class="kv">${total}</div></div>
-    <div class="kpi a"><div class="kl">Pendentes</div><div class="kv">${pend}</div></div>
-    <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv">${resol}</div></div>
+    <div class="kpi b"><div class="kl">Abertas</div><div class="kv">${aberta}</div></div>
+    <div class="kpi a"><div class="kl">Em tratativa</div><div class="kv">${trat}</div></div>
+    <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv">${aguard}</div></div>
     <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv">${atr}</div></div>
-    <div class="kpi a"><div class="kl">Dentro do prazo</div><div class="kv">${noprazo}</div></div>
+    <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv">${resol}</div></div>
   </div>`;
 
   const tipoRank=tally(rows,r=>r.tipo||'(sem tipo)');
-  const respRank=tally(rows,r=>r.responsavel||'(sem responsável)');
+  const respRank=tally(rows.filter(r=>r.responsavel),r=>r.responsavel);
+  const servRank=tally(rows.filter(r=>r.servico),r=>r.servico);
   const ranks = `<div class="g2 mb">
     <div class="card pad"><div class="ct">Ranking por tipo de NC</div>${rankRows(tipoRank)}</div>
-    <div class="card pad"><div class="ct">Ranking por responsável</div>${rankRows(respRank)}</div>
-  </div>`;
+    <div class="card pad"><div class="ct">Ranking por responsável</div>${respRank.length?rankRows(respRank):'<p class="muted" style="font-size:13px">—</p>'}</div>
+  </div>
+  <div class="card pad mb"><div class="ct">Ranking por serviço (PES)</div>${servRank.length?rankRows(servRank):'<p class="muted" style="font-size:13px">—</p>'}</div>`;
 
-  const head=['Item','Data','Obra','Torre','Pav./Apto.','Área externa','Tipo de NC','Descrição','Responsável','Prazo','Status','Situação','Data resolução','Correção','Foto NC','Foto corr.'];
+  const head=['Item','Data','Obra','Torre','Pav./Apto.','Área externa','Tipo de NC','Serviço','Descrição','Registrado por','Responsável','Prazo','Situação','Data resolução','Correção','Foto NC','Foto corr.'];
   const body=rows.map(r=>{
     const sit=situacao(r), key=SIT_META[sit].key, lab=SITLABEL[sit]||sit;
     const link=(u,t)=> u?`<a href="${u}" target="_blank" rel="noopener">${t}</a>`:'—';
     return `<tr>
       <td>${esc(r.item)}</td><td>${fmtBR(r.dataId)}</td><td>${esc(r.obra)}</td>
       <td>${esc(torreOf(r))}</td><td>${esc(pavOf(r))}</td><td>${esc(r.areaExterna)}</td>
-      <td>${esc(r.tipo)}</td><td>${esc(r.descNC)}</td><td>${esc(r.responsavel)}</td><td>${fmtBR(r.prazo)}</td>
-      <td>${esc(r.status)}</td><td class="st st-${key}">${lab}</td><td>${fmtBR(r.dataRes)}</td>
+      <td>${esc(r.tipo)}</td><td>${esc(r.servico)}</td><td>${esc(r.descNC)}</td>
+      <td>${esc(r.registradoPor)}</td><td>${esc(r.responsavel)}</td><td>${fmtBR(r.prazo)}</td>
+      <td class="st st-${key}">${lab}</td><td>${fmtBR(r.dataRes)}</td>
       <td>${esc(r.descCorr)}</td><td>${link(r.fotoNC,'Ver foto')}</td><td>${link(r.fotoCorr,'Ver foto')}</td>
     </tr>`;
   }).join('');
@@ -1167,13 +1406,13 @@ function renderReport(){
   $('#relOut').innerHTML = kpis + ranks + table;
 }
 function initRel(){
-  ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-tipo','rel-sit'].forEach(id=>$('#'+id).addEventListener('input',renderReport));
-  $('#rel-clear').onclick=()=>{ ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-tipo','rel-sit'].forEach(id=>$('#'+id).value=''); renderReport(); };
+  ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).addEventListener('input',renderReport));
+  $('#rel-clear').onclick=()=>{ ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).value=''); renderReport(); };
   $$('.rel-quick [data-q]').forEach(b=> b.onclick=()=>{
     const q=b.dataset.q;
-    if(q==='noprazo'){ $('#rel-sit').value='No prazo'; }
-    else if(q==='atrasada'){ $('#rel-sit').value='Atrasada'; }
-    else { $('#rel-sit').value=''; } // tipo / resp / geral usam os filtros atuais
+    if(q==='noprazo'){ $('#rel-sit').value='no-prazo'; }
+    else if(q==='atrasada'){ $('#rel-sit').value='Atrasado'; }
+    else { $('#rel-sit').value=''; }
     renderReport();
   });
   $('#relExCsv').onclick  = () => exportCSV(relRowsForExport(relFiltered()),  `relatorio_qualidade_${todayISO()}.csv`);
@@ -1340,12 +1579,13 @@ function enterFixMode(id){
   $('#fix-descCorr').value = nc.descCorr || '';
   photos.fotoCorr = (typeof nc.fotoCorr==='string' && nc.fotoCorr.indexOf('http')===0) ? nc.fotoCorr : null;
   renderPhotoPreview('prev-fixCorr','fotoCorr');
-  const resolvida = nc.status==='Resolvido';
-  $('#fix .ct').textContent = resolvida ? 'Atualizar correção da NC' : 'Registrar correção da NC';
-  $('#fix .ct-sub').innerHTML = resolvida
-    ? 'Esta NC já está marcada como <b>Resolvida</b>. Você pode atualizar a descrição e a foto da correção. Os dados da NC não podem ser alterados.'
+  const st = normStatus(nc.status);
+  const jaTratada = (st==='Resolvida' || st==='Aguardando Validação da Qualidade');
+  $('#fix .ct').textContent = jaTratada ? 'Atualizar correção da NC' : 'Registrar correção da NC';
+  $('#fix .ct-sub').innerHTML = jaTratada
+    ? 'Esta NC já possui uma tratativa registrada. Você pode atualizar a descrição e a foto da correção. Os dados da NC não podem ser alterados.'
     : 'Confira os dados da não conformidade e registre a tratativa realizada. Os dados da NC não podem ser alterados aqui.';
-  $('#fixSave').textContent = resolvida ? 'Atualizar correção' : 'Enviar correção';
+  $('#fixSave').textContent = jaTratada ? 'Atualizar correção' : 'Enviar correção';
 }
 function renderFixInfo(nc){
   const fi=(k,v,full)=> v ? `<div class="fi${full?' full':''}"><span class="fk">${k}</span><span class="fv">${esc(v)}</span></div>` : '';
@@ -1356,6 +1596,8 @@ function renderFixInfo(nc){
     fi('Pavimento / Apartamento', pavOf(nc)) +
     fi('Área externa', nc.areaExterna) +
     fi('Tipo da NC', nc.tipo) +
+    fi('Serviço', nc.servico) +
+    fi('Registrado por', nc.registradoPor) +
     fi('Descrição da NC', nc.descNC, true);
   const f=nc.fotoNC;
   if(f && typeof f==='string' && f.indexOf('http')===0){
@@ -1369,8 +1611,8 @@ async function submitFix(){
   if(!desc){ toast('Descreva a correção realizada.','err'); return; }
   const updated = Object.assign({}, nc, {
     descCorr: desc,
-    fotoCorr: photos.fotoCorr,           // base64 (vai pro Drive) ou link já existente
-    status: 'Resolvido',
+    fotoCorr: photos.fotoCorr,
+    status: 'Aguardando Validação da Qualidade',  // a Qualidade valida e marca como Resolvida
     dataRes: todayISO(),
     atualizadoEm: new Date().toISOString()
   });
@@ -1384,11 +1626,81 @@ async function submitFix(){
     $('#fix-fotoCorr').closest('.field').style.display='none';
     $('#fixSave').style.display='none';
     $('#fix .ct').style.display='none'; $('#fix .ct-sub').style.display='none';
-    $('#fixDone').innerHTML = `<div class="fix-ok"><div class="chk">✓</div><h3>Correção registrada com sucesso</h3><p>A não conformidade foi marcada como resolvida.</p>${warn}</div>`;
+    $('#fixDone').innerHTML = `<div class="fix-ok"><div class="chk">✓</div><h3>Correção registrada com sucesso</h3><p>A correção foi enviada para validação da equipe da Qualidade.</p>${warn}</div>`;
     toast('Correção registrada com sucesso.','ok');
   }catch(e){
     $('#fixSave').disabled=false; $('#fixSave').textContent='Enviar correção';
   }
+}
+
+
+/* ============================================================
+   IMPORTAÇÃO ÚNICA — NCs da obra "UBC - Urban Candeias"
+   (extraídas do Relatório de Inspeções Inmeta / inspetora Nicolly)
+   Pode ser removida após o uso. Reexecutar não duplica (dedup por
+   obra + data + descrição). Também chamável pelo console.
+   ============================================================ */
+const UBC_TIPO_MAP = {
+  'Acompanhamento de FVS':'Falha no acompanhamento de FVS',
+  'Condições de início':'Condições de início não respeitada',
+  'Terminalidade do serviço':'Falta de terminalidade do serviço',
+  'Partida de serviço':'Falta de partida de serviço',
+  'Segurança do trabalho':'Segurança do trabalho',
+  'Documentação':'Documentação',
+  'Treinamento':'Treinamento',
+  'Material':'Armazenamento inadequado de material',
+  'Executado em desconformidade com o projeto':'Executado em desacordo com o projeto'
+};
+const UBC_FVS_PES = [
+  ['FVS.025.1.1','PES 025.1 - V11 - Instalações hidrossanitárias'],
+  ['FVS.025.1','PES 025.1 - V11 - Instalações hidrossanitárias'],
+  ['FVS.011.2','PES 011.2 - V4 - Execução de revestimento de parede'],
+  ['FVS.013.1','PES 013.1 - V6 - Revestimento cerâmico - piso e parede'],
+  ['FVS.009.1','PES 009.1 - V5 - Execução de alvenaria estrutural'],
+  ['FVS.024.1','PES 024.1 - V3 - Instalações elétricas'],
+  ['FVS.006.3','PES 006.3 - V0 - Execução de Laje maciça'],
+  ['FVS.6.3','PES 006.3 - V0 - Execução de Laje maciça'],
+  ['FVS.031','PES 031 - V1 - Execução fechamento de shaft com eps'],
+  ['FVS.030','PES 030 - V8 - Paredes em drywall'],
+  ['FVS.020','PES 020 - V7 - Forro em placa de gesso'],
+  ['FVS.027','PES 027 - V4 - Instalações de guarda corpo _ gradil metálico'],
+  ['FVS.035','PES 035 - V3 - Instalação de gás encanado']
+];
+function ubcPes(fv){ if(!fv) return ''; for(const [k,v] of UBC_FVS_PES){ if(fv.indexOf(k)===0) return v; } return ''; }
+const UBC_DATA = [{"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 107", "ar": "", "fv": "FVS.031", "en": "FVS não foi aberta. A base já se encontra fixada.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 106; Térreo - Apto 005", "ar": "", "fv": "FVS.030", "en": "FVS sem acompanhamento. A ficha ainda não foi aberta.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Reunião diária não ocorreu no horário correto. A reunião inicia sempre às 09hrs da manhã.", "co": "Está sendo realizada pontualmente a reunião diária.", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Segurança do trabalho", "to": "Torre F", "pav": "", "ar": "", "fv": "", "en": "Extensão no chão (terceirizada GB).", "co": "A extensão foi levantada e presa no suporte da parede.", "re": "Juliana Macario Silva", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Condições de início", "to": "Torre F", "pav": "Pavimento 3 - Apto 306", "ar": "", "fv": "FVS.011.2", "en": "Proteger o contrapiso.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 107", "ar": "", "fv": "FVS.025.1", "en": "Ficha com itens sem acompanhamento: posicionamento, fixação e se a distribuição/instalação do sistema está de acordo com o projeto.", "co": "FVS atualizada.", "re": "Inaldo Gomes", "pz": "2026-06-04", "ob": ""}, {"d": "2026-06-02", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "A reunião diária não foi realizada hoje.", "co": "Está acontecendo diariamente a reunião.", "re": "Renan Lyra", "pz": "2026-06-03", "ob": ""}, {"d": "2026-06-02", "tr": "", "to": "Torre E", "pav": "Pavimento 4 - Apto 402", "ar": "", "fv": "FVS.011.2", "en": "Janela de inspeção aberta. A alvenaria deveria estar concluída para iniciar o serviço de revestimento de parede.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-02", "tr": "Documentação", "to": "", "pav": "", "ar": "", "fv": "", "en": "Atualizar pasta da obra no Inmeta.", "co": "", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.020", "en": "Ficha sem acompanhamento.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.030", "en": "Ficha sem acompanhamento. Só foi inspecionado condições de início e liberação de serviço.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Terminalidade do serviço", "to": "Torre E", "pav": "", "ar": "Bloco E (geral)", "fv": "FVS.020", "en": "Bloco E sujo com resto de gesso.", "co": "Limpeza foi realizada.", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 303", "ar": "", "fv": "FVS.013.1", "en": "Assentamento do rodapé incorreto. A não conformidade não foi registrada no Inmeta.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-08", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.025.1", "en": "FVS desatualizada, com ramais já plugados e sem o preenchimento dos itens de teste.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 205", "ar": "", "fv": "FVS.020", "en": "Não conformidade de gesso não registrada na FVS.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 204", "ar": "", "fv": "FVS.030", "en": "FVS desatualizada; houve fitamento, porém o item se encontra sem inspeção.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 204", "ar": "", "fv": "FVS.013.1", "en": "Não houve inspeção do item da aderência da peça. Rodapé aplicado, porém sem inspeção na ficha.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 206", "ar": "", "fv": "FVS.027", "en": "Item de fixação do gradil e verificação dos parafusos registrado como conforme na FVS. Entretanto, o gradil é removido diariamente para recebimento de materiais.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2", "ar": "Hall 2", "fv": "FVS.013.1", "en": "Cerâmica do hall instalada sem a abertura prévia da FVS do serviço.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 4 - Apto 408", "ar": "", "fv": "FVS.035", "en": "Ausência de acompanhamento na FVS do serviço de gás referente aos pavimentos 02, 03, 04 e térreo.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-01", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "Refeitório / carpintaria / almoxarifado", "fv": "", "en": "Colocar extintores no refeitório, carpintaria e almoxarifado.", "co": "Foi colocado extintores nos locais.", "re": "Juliana Macario Silva", "pz": "2026-06-08", "ob": ""}, {"d": "2026-06-01", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado / anexos", "fv": "", "en": "Organizar e identificar o armazenamento do almoxarifado e anexos.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "2026-06-13", "ob": ""}, {"d": "2026-05-25", "tr": "Condições de início", "to": "Torre E", "pav": "Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.020", "en": "Não foi realizado o teste da tubulação aérea, porém o forro de gesso já está em execução, contrariando as condições de início.", "co": "Foi realizado o teste!", "re": "Saulo Bezerra", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Terminalidade do serviço", "to": "Torre E", "pav": "Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.013.1", "en": "Serviço acontecendo sem proteção da cerâmica com salva-piso, podendo ocasionar danos e comprometer o acabamento final.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 3 e 4", "ar": "Hall 1", "fv": "FVS.030", "en": "Presença de umidade/mofo nas placas de drywall. A não conformidade não foi registrada na FVS.", "co": "Foi atualizado a FVS.", "re": "Saulo Bezerra", "pz": "2026-05-25", "ob": ""}, {"d": "2026-05-25", "tr": "Treinamento", "to": "", "pav": "", "ar": "", "fv": "", "en": "Estagiários e auxiliares sem treinamento de procedimentos.", "co": "Foi realizado o treinamento de auxiliares e estagiário.", "re": "Renan Lyra", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Partida de serviço", "to": "", "pav": "", "ar": "", "fv": "", "en": "Partida de serviço pendente: esquadrias, impermeabilização dos vãos, calha e gradil.", "co": "Foi realizada a partida de serviço.", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-05-26", "tr": "Condições de início", "to": "Torre A", "pav": "Térreo - Apto 002", "ar": "", "fv": "FVS.011.2", "en": "Caixas elétricas sem a devida proteção.", "co": "", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Planilha de produtividade sem preenchimento.", "co": "Planilha atualizada.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Reunião diária não foi realizada hoje.", "co": "Está acontecendo a reunião diariamente.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Falta de preenchimento do RDO do dia 22/05.", "co": "RDO atualizado.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.020", "en": "Não conformidades de forro de gesso não foram registradas no Inmeta.", "co": "FVS atualizada com as não conformidades registradas no Inmeta.", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 103", "ar": "", "fv": "FVS.020", "en": "Altura do shaft e forro. Verificar!", "co": "Será colocado um complemento de shaft para alcançar o forro.", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 103", "ar": "", "fv": "FVS.013.1", "en": "Ralo sem proteção e com acúmulo de sujeira na varanda.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 3 - Apto 302", "ar": "", "fv": "FVS.025.1", "en": "Fixação incorreta da tubulação.", "co": "Corrigido.", "re": "Inaldo Gomes", "pz": "2026-05-28", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 4 - Apto 401", "ar": "", "fv": "FVS.025.1", "en": "FVS desatualizada.", "co": "FVS atualizada.", "re": "Inaldo Gomes", "pz": "2026-05-28", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Materiais sem identificação e armazenamento incorreto.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Falta FVM de material da terceirizada.", "co": "Está sendo realizada a FVM de materiais da terceirizada.", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Controle de ferramenta: falta preenchimento das datas de entrega/devolução, verificação de funcionamento e assinatura do almoxarife.", "co": "Está sendo realizada corretamente.", "re": "Welldes Carlos Da Silva", "pz": "2026-05-29", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Verificar local para o químico e solicitar a FISPQ.", "co": "Local para o químico ok. Falta apenas a FISPQ no local.", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-22", "tr": "Material", "to": "", "pav": "", "ar": "Pátio (armazenamento de ferragens)", "fv": "", "en": "Armações armazenadas de forma inadequada diretamente no solo e materiais desorganizados.", "co": "Removida e reorganizada ~85% das ferragens para local adequado. Entretanto, ainda permanecem armações no local original de forma desorganizada.", "re": "Welldes Carlos Da Silva", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-22", "tr": "Material", "to": "Torre E", "pav": "Térreo - Apto 003", "ar": "", "fv": "FVS.013.1", "en": "Material armazenado diretamente sobre a cerâmica sem proteção de piso, podendo ocasionar danos e comprometer o acabamento.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-25", "ob": ""}, {"d": "2026-05-22", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Térreo", "ar": "Hall de Entrada 2", "fv": "FVS.025.1.1", "en": "Hall 01 e 02: serviço de barrilete sem acompanhamento.", "co": "Foi atualizada a ficha.", "re": "Saulo Bezerra", "pz": "2026-05-22", "ob": "FVS no relatório: FVS.025.1.1 - Instalação do Barrilete"}, {"d": "2026-05-22", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 2 e 4", "ar": "", "fv": "FVS.6.3", "en": "Segregação próximo à tubulação. O serviço de massa gesso já iniciou no local.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-26", "ob": "Também: Condições de início não respeitada"}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 301", "ar": "", "fv": "FVS.009.1", "en": "Ficha sem acompanhamento e com não conformidade em aberto desde dezembro de 2025.", "co": "Ficha atualizada!", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 301; Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.030", "en": "Ficha de drywall sem acompanhamento.", "co": "Ficha atualizada!", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 302", "ar": "", "fv": "FVS.013.1", "en": "Identificada a aplicação do rodapé, porém sem o devido registro de inspeção no Inmeta.", "co": "Ficha atualizada!", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "", "to": "Torre E", "pav": "Pavimento 3 - Apto 301 e 303", "ar": "", "fv": "FVS.025.1", "en": "Ralo coberto de massa na varanda.", "co": "", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Condições de início", "to": "Torre E", "pav": "Pavimento 3 - Apto 304", "ar": "", "fv": "FVS.011.2", "en": "Corte para passagem de SPDA. O corte deve estar devidamente fechado.", "co": "", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 102", "ar": "", "fv": "FVS.013.1", "en": "Falta de registro de FVS na etapa de assentamento de cerâmica, rodapés e aderência das peças após a cura.", "co": "", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Caixa de ar condicionado - sem FVM: almoxarife não recebeu a nota fiscal do fornecedor.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Treinamento", "to": "", "pav": "", "ar": "", "fv": "", "en": "Almoxarife Welldes sem treinamento de integração de segurança do trabalho.", "co": "Foi realizado o treinamento de integração.", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Documentação", "to": "", "pav": "", "ar": "", "fv": "", "en": "Almoxarife Welldes está sem o ASO anexado na documentação.", "co": "Foi anexado o ASO no sistema.", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Desmoldante vencido!", "co": "", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Sem sinalização de segurança, sem proteção adequada da área e sem disponibilização da FISPQ no local.", "co": "", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Armazenamento inadequado de produto químico, sem contenção para vazamentos.", "co": "Relocado o armazenamento dos químicos para ambiente fechado e com contenção.", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo", "ar": "Hall de entrada 1", "fv": "FVS.030", "en": "Presença de infiltração na parede em drywall, com formação de mofo e manchas de umidade.", "co": "", "re": "Saulo Bezerra Pedrosa", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Ausência de revestimento cerâmico na varanda e no quarto 01, não sendo registrada a pendência na FVS.", "co": "Cerâmica concluída no apartamento.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Executado em desconformidade com o projeto", "to": "Torre C", "pav": "Térreo - Apto 003", "ar": "", "fv": "FVS.024.1", "en": "Verificar todos os apartamentos: caixinha elétrica em local incorreto, encoberta por massa de gesso, recuada e desalinhada/torta.", "co": "Mapeadas todas as caixinhas elétricas tortas ou em lugares errados. A pendência está sendo tratada.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": "Também: Falha no acompanhamento de FVS"}, {"d": "2026-05-19", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "", "fv": "", "en": "Ausência de placas de identificação dos apartamentos.", "co": "", "re": "Renan Lyra", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.025.1", "en": "Todos os apartamentos do Bloco A: preenchimento incorreto da FVS de Instalações hidrossanitárias.", "co": "Foi efetuada a revisão completa das fichas.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado (esquadrias)", "fv": "", "en": "Armazenar esquadria conforme PCM.", "co": "", "re": "Paulo Martins", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Rodapé e soleira executados, porém o item não foi registrado na FVS.", "co": "", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.009.1", "en": "FVS sem acompanhamento. Deveria estar finalizada pois o serviço de massa gesso já foi iniciado.", "co": "FVS do apartamento finalizada. Porém é preciso finalizar as fichas dos demais apartamentos do bloco E.", "re": "Felipe José Coriolano Correia", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.011.2", "en": "FVS sem acompanhamento. Falta preenchimento do item alinhamento.", "co": "FVS atualizada.", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Cerâmica danificada e sem registro da NC no Inmeta. Rodapé já instalado, porém o item não foi inspecionado.", "co": "FVS atualizada.", "re": "Felipe José Coriolano Correia", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.024.1", "en": "FVS sem acompanhamento. Itens sem inspeção!", "co": "Sim.", "re": "Laison Souza Batista da Silva", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Condições de início", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.011.2", "en": "Rasgo na alvenaria para passagem do SPDA. A alvenaria deve estar concluída para início do serviço de massa gesso.", "co": "", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.030", "en": "FVS sem acompanhamento.", "co": "Sim.", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.031", "en": "Item de base de shaft inspecionado; no entanto, a base de shaft não se encontra fixada.", "co": "", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}];
+
+async function importarUBCUrbanCandeias(){
+  const OBRA='UBC - Urban Candeias';
+  const REG='Nicolly Roberta Santana de Lima';
+  if(!StorageAPI || StorageAPI.mode!=='sheets'){
+    if(!confirm('Atenção: o app não está conectado ao Google Sheets. Importar mesmo assim?')) return;
+  }
+  // dedup: assinatura obra | data | início da descrição
+  const sig = r => `${(r.obra||'').trim()}|${r.dataId||''}|${(r.descNC||'').trim().slice(0,60).toLowerCase()}`;
+  const existentes = new Set(STATE.records.map(sig));
+  let item = nextItemNumber();
+  let novos=0, pulados=0, falhas=0;
+  for(const d of UBC_DATA){
+    const obsParts=[]; if(d.ob) obsParts.push(d.ob);
+    const rec = {
+      id: uuid(), item: item, dataId: d.d, obra: OBRA,
+      torre: d.to||'', pavimentoApartamento: d.pav||'', areaExterna: d.ar||'', local:'',
+      tipo: (UBC_TIPO_MAP[d.tr] || d.tr || ''), servico: ubcPes(d.fv),
+      registradoPor: REG, descNC: d.en||'', fotoNC:'',
+      responsavel: d.re||'', responsavelTel: (findResp(d.re)||{}).tel || '',
+      prazo: d.pz||'', status: (d.co && d.co.trim()) ? 'Aguardando Validação da Qualidade' : 'Aberta',
+      dataRes:'', descCorr: d.co||'', fotoCorr:'', obs: obsParts.join(' | '),
+      criadoEm: new Date().toISOString(), atualizadoEm: new Date().toISOString()
+    };
+    if(existentes.has(sig(rec))){ pulados++; continue; }
+    try{ await StorageAPI.upsert(rec); existentes.add(sig(rec)); novos++; item++; }
+    catch(e){ falhas++; }
+  }
+  try{ await refresh(); }catch(e){}
+  const msg = `Importação UBC - Urban Candeias concluída.\n\nImportadas: ${novos}\nJá existentes (ignoradas): ${pulados}` + (falhas?`\nFalhas ao salvar: ${falhas}`:'');
+  toast(`UBC: ${novos} importadas, ${pulados} já existentes${falhas?`, ${falhas} falhas`:''}.`, falhas?'err':'ok');
+  alert(msg);
+  return {novos, pulados, falhas};
 }
 
 function initStoreBadge(){
@@ -1432,5 +1744,10 @@ function initStoreBadge(){
    — mesma interface list/upsert/remove.
    ===================================================================== */
 </script>
+<!-- BOTÃO TEMPORÁRIO: importação única das NCs do Urban Candeias. Remover após usar. -->
+<button id="btnImportUBC" onclick="importarUBCUrbanCandeias()"
+ style="position:fixed;right:14px;bottom:14px;z-index:9999;background:#1850a0;color:#fff;border:none;
+ border-radius:10px;padding:12px 16px;font:600 13px/1 'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;">
+ ⬆ Importar NCs UBC (uso único)</button>
 </body>
 </html>
