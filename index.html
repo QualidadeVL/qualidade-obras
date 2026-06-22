@@ -34,6 +34,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .store-badge.local{background:rgba(70,153,88,.22);color:#bfe6c8;}
 .store-badge.memory{background:rgba(224,136,24,.22);color:#f3d29a;}
 .store-badge .dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+.app-foot{max-width:1100px;margin:8px auto 80px;padding:14px 18px;color:var(--text2);font-size:12.5px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--border);}
+.app-foot #perfilFoot{font-weight:700;color:var(--text);}
+.app-foot .foot-sep{color:var(--text3);}
+.pdf-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;color:var(--text);max-width:100%;}
+.pdf-chip .ic{font-size:16px;}
+.pdf-chip .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;}
+.pdf-chip .rm{margin-left:4px;border:none;background:none;color:var(--text3);font-size:16px;cursor:pointer;line-height:1;}
+a.evid-pdf{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none;}
+a.evid-pdf:hover{border-color:var(--blue);}
 
 .nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;position:sticky;top:0;z-index:50;overflow-x:auto;scrollbar-width:none;}
 .nav::-webkit-scrollbar{display:none;}
@@ -96,6 +105,12 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .kpi.b .kv{color:var(--blue);} .kpi.v .kv{color:var(--violet);}
 
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.obra-block{border-top:4px solid var(--blue);}
+.obra-block .obra-h{font-size:16px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.kg-sm{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+.kg-sm .kpi{padding:12px 14px;}
+.kg-sm .kpi .kv{font-size:22px;}
 .ct{font-size:13px;font-weight:600;margin-bottom:4px;}
 .ct-sub{font-size:11px;color:var(--text3);margin-bottom:12px;}
 .chart-box{position:relative;height:240px;}
@@ -134,9 +149,9 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 
 .rec{padding:14px 16px;border-left:4px solid var(--border2);}
 .rec.st-Aberta{border-left-color:var(--blue);}
-.rec.st-EmTratativa{border-left-color:var(--amber);}
+.rec.st-AbertaPrazo{border-left-color:var(--blue);}
 .rec.st-Aguardando{border-left-color:var(--violet);}
-.rec.st-Atrasado{border-left-color:var(--red);}
+.rec.st-Atrasada{border-left-color:var(--red);}
 .rec.st-Resolvida{border-left-color:var(--green);}
 .rec-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
 .rec-id{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
@@ -219,12 +234,13 @@ table.rep th,table.rep td{border:1px solid var(--border);padding:7px 9px;text-al
 table.rep th{background:#2f3a42;color:#fff;font-weight:600;white-space:nowrap;}
 table.rep tr:nth-child(even) td{background:#faf9f6;}
 table.rep .st{font-weight:700;white-space:nowrap;}
-table.rep .st-Aberta{color:var(--blue);} table.rep .st-EmTratativa{color:var(--amber);}
-table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(--red);} table.rep .st-Resolvida{color:var(--green);}
+table.rep .st-Aberta{color:var(--blue);} table.rep .st-AbertaPrazo{color:var(--blue);}
+table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasada{color:var(--red);} table.rep .st-Resolvida{color:var(--green);}
 .rep-foot{font-size:11px;color:var(--text3);margin-top:10px;}
 
 @media(max-width:680px){
   .grid,.g2{grid-template-columns:1fr;}
+  .g3{grid-template-columns:1fr;}
   .wrap{padding:16px 12px 96px;}
   .hdr h1{font-size:15px;}
   .nt{min-width:104px;padding:13px 10px;}
@@ -259,17 +275,17 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
 </header>
 
 <nav class="nav">
-  <button class="nt active" data-tab="form">Novo registro</button>
-  <button class="nt" data-tab="dash">Painel</button>
+  <button class="nt active" data-tab="dash">Dashboard</button>
+  <button class="nt" data-tab="form">Novo registro</button>
   <button class="nt" data-tab="list">Registros <span class="badge" id="navCount">0</span></button>
-  <button class="nt" data-tab="equipe">Cadastros</button>
   <button class="nt" data-tab="rel">Relatórios</button>
+  <button class="nt" data-tab="equipe">Cadastros</button>
 </nav>
 
 <div class="wrap">
 
 <!-- ============ NOVO REGISTRO ============ -->
-<section class="pg active" id="form">
+<section class="pg" id="form">
   <div class="sec-eyebrow" id="formTitle">Registrar não conformidade</div>
 
   <div class="card pad mb">
@@ -319,10 +335,10 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
         <textarea id="f-descNC" placeholder="O que foi identificado na inspeção"></textarea>
       </div>
       <div class="field full">
-        <label>Foto da NC encontrada</label>
+        <label>Evidência da NC</label>
         <div class="photo">
-          <label class="photo-btn" for="f-fotoNC">📷 Tirar foto ou escolher arquivo
-            <input id="f-fotoNC" type="file" accept="image/*" capture="environment"></label>
+          <label class="photo-btn" for="f-fotoNC">📎 Anexar evidência (imagem ou PDF)
+            <input id="f-fotoNC" type="file" accept="image/*,.pdf,application/pdf"></label>
           <div id="prev-fotoNC"></div>
         </div>
       </div>
@@ -348,10 +364,10 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
         <label>Status <span class="req">*</span></label>
         <select id="f-status">
           <option>Aberta</option>
-          <option>Em Tratativa</option>
-          <option>Aguardando Validação da Qualidade</option>
-          <option>Resolvida</option>
+          <option>Aguardando validação</option>
+          <option id="opt-status-resolvida">Resolvida</option>
         </select>
+        <div class="hint" id="hint-status" style="display:none">Apenas a Qualidade (Coordenador/Analista/Estagiário) pode marcar como Resolvida.</div>
       </div>
       <div class="field">
         <label>Data da resolução</label>
@@ -362,16 +378,16 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
         <textarea id="f-descCorr" placeholder="O que foi feito para corrigir"></textarea>
       </div>
       <div class="field full">
-        <label>Foto da correção</label>
+        <label>Evidência da correção da NC</label>
         <div class="photo">
-          <label class="photo-btn" for="f-fotoCorr">📷 Tirar foto ou escolher arquivo
-            <input id="f-fotoCorr" type="file" accept="image/*" capture="environment"></label>
+          <label class="photo-btn" for="f-fotoCorr">📎 Anexar evidência (imagem ou PDF)
+            <input id="f-fotoCorr" type="file" accept="image/*,.pdf,application/pdf"></label>
           <div id="prev-fotoCorr"></div>
         </div>
       </div>
       <div class="field full">
         <label>Observações</label>
-        <textarea id="f-obs" placeholder="Causa provável, reincidência, observações para a RAR…"></textarea>
+        <textarea id="f-obs"></textarea>
       </div>
     </div>
 
@@ -385,53 +401,36 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
 </section>
 
 <!-- ============ PAINEL ============ -->
-<section class="pg" id="dash">
-  <div class="sec-eyebrow">Indicadores</div>
+<section class="pg active" id="dash">
+  <div class="sec-eyebrow">Visão geral · todas as obras</div>
   <div class="kg mb">
-    <div class="kpi"><div class="kl">Total de NCs</div><div class="kv" id="k-total">0</div><div class="ks">registros carregados</div></div>
-    <div class="kpi b"><div class="kl">Abertas</div><div class="kv" id="k-aberta">0</div><div class="ks">aguardando tratativa</div></div>
-    <div class="kpi a"><div class="kl">Em tratativa</div><div class="kv" id="k-trat">0</div><div class="ks">em andamento</div></div>
+    <div class="kpi"><div class="kl">Total de NCs</div><div class="kv" id="k-total">0</div><div class="ks">todas as obras</div></div>
+    <div class="kpi b"><div class="kl">Abertas (dentro do prazo)</div><div class="kv" id="k-aberta">0</div><div class="ks">ainda no prazo</div></div>
     <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv" id="k-aguard">0</div><div class="ks">com a Qualidade</div></div>
     <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv" id="k-resol">0</div><div class="ks" id="k-resol-s"></div></div>
     <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv" id="k-atr">0</div><div class="ks">prazo vencido</div></div>
-    <div class="kpi s"><div class="kl">Tempo médio de resolução</div><div class="kv" id="k-tmr">—</div><div class="ks">da abertura à resolução</div></div>
-    <div class="kpi b"><div class="kl">Resolução no prazo</div><div class="kv" id="k-prazo">—</div><div class="ks">resolvidas até o prazo</div></div>
-  </div>
-
-  <div class="card pad mb">
-    <div class="ct">NCs por status</div><div class="ct-sub">um gráfico separado por obra</div>
-    <div id="statusPorObra" class="torre-grid"></div>
-  </div>
-
-  <div class="card pad mb">
-    <div class="ct">NCs por responsável</div><div class="ct-sub">um gráfico separado por obra (resolvidas × em aberto)</div>
-    <div id="respPorObra" class="torre-grid"></div>
-  </div>
-
-  <div class="card pad mb"><div class="ct">NCs por obra</div><div class="ct-sub">total de não conformidades por obra</div><div class="chart-box"><canvas id="chObra"></canvas></div></div>
-
-  <div class="card pad mb">
-    <div class="ct">NCs por torre</div><div class="ct-sub">um gráfico separado por obra</div>
-    <div id="torrePorObra" class="torre-grid"></div>
+    <div class="kpi s"><div class="kl">Tempo médio de resolução</div><div class="kv" id="k-tmr">—</div><div class="ks">geral</div></div>
+    <div class="kpi b"><div class="kl">Resolução no prazo</div><div class="kv" id="k-prazo">—</div><div class="ks">taxa geral</div></div>
   </div>
 
   <div class="g2 mb">
-    <div class="card pad"><div class="ct">Top 3 serviços com mais NCs</div><div class="ct-sub">procedimentos (PES) mais recorrentes</div><div id="top3Serv"></div></div>
-    <div class="card pad"><div class="ct">Top 3 responsáveis com mais NCs</div><div class="ct-sub">maior carga de não conformidades</div><div id="top3Resp"></div></div>
+    <div class="card pad"><div class="ct">NCs por status</div><div class="ct-sub">situação geral (todas as obras)</div><div class="chart-box"><canvas id="chStatusGeral"></canvas></div></div>
+    <div class="card pad"><div class="ct">NCs por obra</div><div class="ct-sub">total de não conformidades por obra</div><div class="chart-box"><canvas id="chObra"></canvas></div></div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card pad"><div class="ct">Top 3 tipos de NC</div><div class="ct-sub">geral</div><div id="top3TiposGeral"></div></div>
+    <div class="card pad"><div class="ct">Top 3 serviços</div><div class="ct-sub">geral</div><div id="top3Serv"></div></div>
   </div>
 
   <div class="card pad mb">
     <div class="ct">Reincidências por tipo de NC</div>
-    <div class="ct-sub">Top 3 geral e ranking completo dos tipos mais recorrentes</div>
-    <div id="top3Geral" class="top3-row"></div>
+    <div class="ct-sub">ranking completo dos tipos mais recorrentes (geral)</div>
     <div id="reincRank"></div>
   </div>
 
-  <div class="card pad mb">
-    <div class="ct">Top 3 não conformidades por obra</div>
-    <div class="ct-sub">tipos mais recorrentes em cada obra</div>
-    <div id="obraTop3"></div>
-  </div>
+  <div class="sec-eyebrow">Por obra</div>
+  <div id="obrasBlocks"></div>
   <div id="dashEmpty"></div>
 </section>
 
@@ -451,8 +450,12 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
       <div class="field"><label>Tipo de NC</label><select id="ft-tipo"><option value="">Todos</option></select></div>
       <div class="field"><label>Serviço (PES)</label><select id="ft-servico"><option value="">Todos</option></select></div>
       <div class="field"><label>Status</label><select id="ft-status">
-        <option value="">Todos</option><option>Aberta</option><option>Em Tratativa</option>
-        <option value="Aguardando">Aguardando validação</option><option value="Atrasado">Atrasadas</option><option>Resolvida</option>
+        <option value="">Todos</option>
+        <option value="Aberta (dentro do prazo)">Aberta (dentro do prazo)</option>
+        <option value="Aberta">Aberta (sem prazo)</option>
+        <option value="Atrasada">Atrasadas</option>
+        <option value="Aguardando">Aguardando validação</option>
+        <option value="Resolvida">Resolvidas</option>
       </select></div>
       <div class="field"><label>&nbsp;</label><button class="btn btn-ghost" id="ft-clear">Limpar filtros</button></div>
     </div>
@@ -523,11 +526,10 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
       <div class="field"><label>Serviço (PES)</label><select id="rel-servico"><option value="">Todos</option></select></div>
       <div class="field"><label>Situação</label><select id="rel-sit">
         <option value="">Todas</option>
-        <option>Aberta</option>
-        <option value="Em Tratativa">Em tratativa</option>
+        <option value="Aberta (dentro do prazo)">Aberta (dentro do prazo)</option>
+        <option value="Aberta">Aberta (sem prazo)</option>
+        <option value="Atrasada">Atrasadas</option>
         <option value="Aguardando">Aguardando validação</option>
-        <option value="no-prazo">Dentro do prazo</option>
-        <option value="Atrasado">Atrasadas</option>
         <option value="Resolvida">Resolvidas</option>
       </select></div>
       <div class="field"><label>&nbsp;</label><button class="btn btn-ghost" id="rel-clear">Limpar filtros</button></div>
@@ -566,9 +568,9 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
       <textarea id="fix-descCorr" rows="4" placeholder="Descreva o que foi feito para corrigir a não conformidade…"></textarea>
     </div>
     <div class="field full">
-      <label>Foto da correção</label>
-      <label class="photo-btn" for="fix-fotoCorr">📷 Tirar foto ou escolher arquivo
-        <input id="fix-fotoCorr" type="file" accept="image/*" capture="environment" style="display:none">
+      <label>Evidência da correção da NC</label>
+      <label class="photo-btn" for="fix-fotoCorr">📎 Anexar evidência (imagem ou PDF)
+        <input id="fix-fotoCorr" type="file" accept="image/*,.pdf,application/pdf" style="display:none">
       </label>
       <div id="prev-fixCorr" class="prev"></div>
     </div>
@@ -578,6 +580,10 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
 </section>
 
 </div>
+
+<footer class="app-foot no-print">
+  <span>Qualidade em Obras — Acompanhamento diário</span>
+</footer>
 
 <div class="modal" id="confirmModal">
   <div class="modal-box">
@@ -589,7 +595,7 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasado{color:var(
     </div>
   </div>
 </div>
-<div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt="Foto da não conformidade"></div>
+<div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt="Evidência da NC"></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -674,52 +680,80 @@ const OBRAS_INICIAIS = [
 
 /* ---------------- constantes / helpers ---------------- */
 const TIPOS = ['Falha no acompanhamento de FVS','Condições de início não respeitada',
-  'Executado em desacordo com o projeto','Armazenamento inadequado de material',
+  'Executado em desacordo com o projeto','Executado em desacordo com o procedimento',
+  'Armazenamento inadequado de material',
   'Falta de partida de serviço','Segurança do trabalho','Falta de terminalidade do serviço',
   'Treinamento','Documentação'];
 
 const TORRES_SUG = ['Torre 1','Torre 2','Torre 3','Torre 4','Torre 5','Torre 6','Torre 7','Torre 8'];
-const AREAS_SUG  = ['Calçada','Fachada','Piscina','Casa de gás','Central de resíduos','Estacionamento','Jardim','Área técnica'];
+const AREAS_SUG  = ['TV - Trecho viário','TB - Trecho de bloco','TE - Trecho de edícula','Casa de gás','Casa de lixo','Salão de festa','Sala multiuso','Guarita','Zeladoria','Churrasqueira','Mini campo','Espaço fitness','Espaço boa idade','Espaço kids','Pet place','Casa de bomba - castelo d\'água','Casa de bomba - piscina','Playground','Bicicletário'];
+
+/* ============================================================
+   CONTROLE DE ACESSO POR PERFIL
+   Para trocar o perfil do dispositivo/usuário, altere PERFIL_USUARIO.
+   Perfis: COORDENADOR | ANALISTA | ESTAGIARIO_QUALIDADE | USUARIO
+   ============================================================ */
+const PERFIL_USUARIO = "COORDENADOR";
+const PERFIL_LABELS = {
+  COORDENADOR:'Coordenador da Qualidade', ANALISTA:'Analista da Qualidade',
+  ESTAGIARIO_QUALIDADE:'Estagiário(a) da Qualidade', USUARIO:'Usuário'
+};
+const PERFIL_PERMS = {
+  COORDENADOR:          { importar:true, validar:true, excluir:true,  relatorios:true, admin:true },
+  ANALISTA:             { importar:true, validar:true, excluir:false, relatorios:true, admin:true },
+  ESTAGIARIO_QUALIDADE: { importar:true, validar:true, excluir:false, relatorios:true, admin:true },
+  USUARIO:              { importar:false,validar:false,excluir:false, relatorios:false,admin:false }
+};
+function perfilAtual(){ return PERFIL_PERMS[PERFIL_USUARIO] || PERFIL_PERMS.USUARIO; }
+function can(acao){ return !!perfilAtual()[acao]; }
+function perfilLabel(){ return PERFIL_LABELS[PERFIL_USUARIO] || PERFIL_LABELS.USUARIO; }
+
+/* Padronização do campo "Registrado por" (Nicolly Roberta Santana de Lima -> Nicolly Roberta) */
+const REG_ANTIGO = 'Nicolly Roberta Santana de Lima';
+const REG_NOVO   = 'Nicolly Roberta';
+function normReg(s){ return (s===REG_ANTIGO) ? REG_NOVO : (s||''); }
+function regOf(r){ return normReg(r.registradoPor); }
+function pesLabel(s){ return (s||'').replace(/ - V\d+ - /,' - '); }
 
 /* Lista Mestra de Procedimentos (PES) — VL Construtora. Campo Serviço (obrigatório, sem digitação). */
 const SERVICOS = [
-'PES 001 - V4 - Compactação de aterro','PES 002 - V5 - Locação de obra',
-'PES 003.1 - V3 - Fundação direta - Radier protendido','PES 003.2 - V4 - Sapata corrida e isolada',
-'PES 003.3 - V2 - Fundação direta - Radier','PES 003.4 - V5 - Fundação direta - Radier com fibras',
-'PES 003.5 - V1 - Fundação em estaca pré-moldada de concreto','PES 004 - V6 - Laje falsa e rebaixo',
-'PES 005 - V5 - Forma e desforma','PES 006 - V4 - Montagem de armadura','PES 006.2 - V1 - Laje em treliça',
-'PES 006.3 - V0 - Execução de Laje maciça','PES 007 - V2 - Concretagem de peças estrutural',
-'PES 008 - V1 - Produção de concreto','PES 009.1 - V5 - Execução de alvenaria estrutural',
-'PES 009.2 - V10 - Estrutura em paredes e lajes de concreto - pré durante concretagem',
-'PES 009.3 - V1 - Estrutura em parede e lajes de concreto - Pós concretagem',
-'PES 010.1 - V4 - Execução de alvenaria não estrutural','PES 010.2 - V1 - Execução de alvenaria com bloco de gesso',
-'PES 011.1 - V3 - Execução de revestimento de paredes com argamassa','PES 011.2 - V4 - Execução de revestimento de parede',
-'PES 012 - V1 - Produção de argamassa','PES 013.1 - V6 - Revestimento cerâmico - piso e parede',
-'PES 013.2 - V1 - Revestimento em porcelanato','PES 014 - V8 - Execução de contrapiso',
-'PES 015 - V3 - Execução de muro com placa pré moldada','PES 016 - V1 - Moldagem de corpos de prova',
-'PES 017.1 - V2 - Estrutura de madeira para coberta','PES 017.2 - V3 - Estrutura metálica para coberta',
-'PES 018.1 - V6 - Impermeabilização com argamassa polimérica','PES 018.2 - V1 - Impermeabilização com manta asfáltica',
-'PES 018.3 - V4 - Impermeabilização com super manta líquida','PES 018.4 - V1 - Impermeabilização com manta aluminizada',
-'PES 019.1 - V4 - Cobertura em telha cerâmica','PES 019.2 - V5 - Cobertura com telha de fibrocimento',
-'PES 020 - V7 - Forro em placa de gesso','PES 021 - V6 - Instalação de esquadrias (parafusada)',
-'PES 022 - V6 - Colocação de porta pronta','PES 023.1 - V2 - Colocação de bancada',
-'PES 023.2 - V3 - Instalação de louças em metais hidrossanitários','PES 024.1 - V3 - Instalações elétricas',
-'PES 024.2 - V6 - Acabamento elétrico','PES 024.3 - V1 - Spda',
-'PES 025.1 - V11 - Instalações hidrossanitárias','PES 025.2 - V1 - Instalação de combate a fogo e incêndio',
-'PES 026.1 - V6 - Pintura interna','PES 026.2 - V3 - Execução de pintura externa',
-'PES 027 - V4 - Instalações de guarda corpo / gradil metálico','PES 028 - V5 - Drenagem de águas pluviais',
-'PES 029 - V4 - Rede de esgoto sanitário','PES 030 - V8 - Paredes em drywall',
-'PES 031 - V1 - Execução fechamento de shaft com eps','PES 032 - V4 - Vagas de garagem',
-'PES 033.1 - V1 - Muro de contenção de gabião','PES 033.2 - V0 - Muro de contenção em concreto armado',
-'PES 034 - V4 - Instalação de corrimão, escada tipo marinheiro e alçapão','PES 035 - V3 - Instalação de gás encanado',
-'PES 036 - V4 - Rede de abastecimento de água','PES 037.1 - V5 - Pavimentação em intertravados',
-'PES 037.2 - V1 - Pavimentação em paralelepípedos','PES 038.1 - V4 - Passeio em intertravados',
-'PES 038.2 - V3 - Passeio em concreto','PES 039 - V2 - Execução da calha da coberta',
-'PES 039.1 - V1 - Execução de estrutura expandida','PES 039.2 - V1 - Execução do chapim da platibanda',
-'PES 040 - V1 - Execução de infra - Enterrados','PES 041 - V5 - Caixa de ar',
-'PES 042 - V1 - Rede de alta e iluminação','PES 043 - V2 - Instalação cabos shaft e qdg_cdm',
-'PES 044 - V1 - Limpeza dos apartamentos','PES 045 - V1 - Execução de Terraplenagem',
-'PES 046 - V1 - Fabricação, Entrega e Aplicação de Kits'];
+'PES 001 - Compactação de aterro','PES 002 - Locação de obra',
+'PES 003.1 - Fundação direta - Radier protendido','PES 003.2 - Sapata corrida e isolada',
+'PES 003.3 - Fundação direta - Radier','PES 003.4 - Fundação direta - Radier com fibras',
+'PES 003.5 - Fundação em estaca pré-moldada de concreto','PES 004 - Laje falsa e rebaixo',
+'PES 005 - Forma e desforma','PES 006 - Montagem de armadura','PES 006.2 - Laje em treliça',
+'PES 006.3 - Execução de Laje maciça','PES 007 - Concretagem de peças estrutural',
+'PES 008 - Produção de concreto','PES 009.1 - Execução de alvenaria estrutural',
+'PES 009.2 - Estrutura em paredes e lajes de concreto - pré durante concretagem',
+'PES 009.3 - Estrutura em parede e lajes de concreto - Pós concretagem',
+'PES 010.1 - Execução de alvenaria não estrutural','PES 010.2 - Execução de alvenaria com bloco de gesso',
+'PES 011.1 - Execução de revestimento de paredes com argamassa','PES 011.2 - Execução de revestimento de parede',
+'PES 012 - Produção de argamassa','PES 013.1 - Revestimento cerâmico - piso e parede',
+'PES 013.2 - Revestimento em porcelanato','PES 014 - Execução de contrapiso',
+'PES 015 - Execução de muro com placa pré moldada','PES 016 - Moldagem de corpos de prova',
+'PES 017.1 - Estrutura de madeira para coberta','PES 017.2 - Estrutura metálica para coberta',
+'PES 018.1 - Impermeabilização com argamassa polimérica','PES 018.2 - Impermeabilização com manta asfáltica',
+'PES 018.3 - Impermeabilização com super manta líquida','PES 018.4 - Impermeabilização com manta aluminizada',
+'PES 019.1 - Cobertura em telha cerâmica','PES 019.2 - Cobertura com telha de fibrocimento',
+'PES 020 - Forro em placa de gesso','PES 021 - Instalação de esquadrias (parafusada)',
+'PES 022 - Colocação de porta pronta','PES 023.1 - Colocação de bancada',
+'PES 023.2 - Instalação de louças em metais hidrossanitários','PES 024.1 - Instalações elétricas',
+'PES 024.2 - Acabamento elétrico','PES 024.3 - Spda',
+'PES 025.1 - Instalações hidrossanitárias','PES 025.2 - Instalação de combate a fogo e incêndio',
+'PES 026.1 - Pintura interna','PES 026.2 - Execução de pintura externa',
+'PES 027 - Instalações de guarda corpo / gradil metálico','PES 028 - Drenagem de águas pluviais',
+'PES 029 - Rede de esgoto sanitário','PES 030 - Paredes em drywall',
+'PES 031 - Execução fechamento de shaft com eps','PES 032 - Vagas de garagem',
+'PES 033.1 - Muro de contenção de gabião','PES 033.2 - Muro de contenção em concreto armado',
+'PES 034 - Instalação de corrimão, escada tipo marinheiro e alçapão','PES 035 - Instalação de gás encanado',
+'PES 036 - Rede de abastecimento de água','PES 037.1 - Pavimentação em intertravados',
+'PES 037.2 - Pavimentação em paralelepípedos','PES 038.1 - Passeio em intertravados',
+'PES 038.2 - Passeio em concreto','PES 039 - Execução da calha da coberta',
+'PES 039.1 - Execução de estrutura expandida','PES 039.2 - Execução do chapim da platibanda',
+'PES 040 - Execução de infra - Enterrados','PES 041 - Caixa de ar',
+'PES 042 - Rede de alta e iluminação','PES 043 - Instalação cabos shaft e qdg_cdm',
+'PES 044 - Limpeza dos apartamentos','PES 045 - Execução de Terraplenagem',
+'PES 046 - Fabricação, Entrega e Aplicação de Kits'];
 
 /* Torres por obra (regras configuráveis). Chave = nome da obra; valor = lista de torres.
    Para adicionar regras de outras obras no futuro, basta incluir aqui. */
@@ -745,10 +779,16 @@ function apartamentosDoPav(pav){
 function pavLabel(pav){ if(!pav) return ''; if(pav==='Térreo'||pav==='Coberta') return pav; return 'Pavimento '+pav; }
 function compoePav(pav, apto){ const l=pavLabel(pav); if(l && apto) return `${l} - Apto ${apto}`; return l || apto || ''; }
 
-/* Fluxo de status: Aberta → Em Tratativa → Aguardando Validação da Qualidade → Resolvida.
-   "Atrasado" é situação calculada (prazo vencido e não resolvida). */
-const STATUS_LIST = ['Aberta','Em Tratativa','Aguardando Validação da Qualidade','Resolvida'];
-function normStatus(s){ if(!s||s==='Pendente') return 'Aberta'; if(s==='Resolvido') return 'Resolvida'; return s; }
+/* Fluxo de status (status gravados): Aberta → Aguardando validação → Resolvida.
+   Situações calculadas para exibição: Aberta, Aberta (dentro do prazo), Atrasada, Aguardando validação, Resolvida.
+   "Atrasada" e "Aberta (dentro do prazo)" são calculadas automaticamente pela data do prazo. */
+const STATUS_LIST = ['Aberta','Aguardando validação','Resolvida'];
+function normStatus(s){
+  if(!s || s==='Pendente' || s==='Em Tratativa') return 'Aberta';
+  if(s==='Resolvido') return 'Resolvida';
+  if(s==='Aguardando Validação da Qualidade' || s==='Aguardando') return 'Aguardando validação';
+  return s;
+}
 
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -768,13 +808,17 @@ function isOverdue(r){ return r.prazo && parseISO(r.prazo) < startToday(); }
 function situacao(r){
   const st = normStatus(r.status);
   if(st === 'Resolvida') return 'Resolvida';
-  if(st === 'Aguardando Validação da Qualidade') return 'Aguardando';
-  if(isOverdue(r)) return 'Atrasado';
-  return st; // 'Aberta' | 'Em Tratativa'
+  if(st === 'Aguardando validação') return 'Aguardando';
+  if(isOverdue(r)) return 'Atrasada';
+  if(r.prazo) return 'Aberta (dentro do prazo)'; // aberta e ainda dentro do prazo
+  return 'Aberta'; // aberta sem prazo definido
 }
 const SIT_META = {
-  'Aberta':{cls:'b',key:'Aberta'}, 'Em Tratativa':{cls:'a',key:'EmTratativa'},
-  'Aguardando':{cls:'v',key:'Aguardando'}, 'Atrasado':{cls:'r',key:'Atrasado'}, 'Resolvida':{cls:'g',key:'Resolvida'}
+  'Aberta':{cls:'b',key:'Aberta'},
+  'Aberta (dentro do prazo)':{cls:'b',key:'AbertaPrazo'},
+  'Aguardando':{cls:'v',key:'Aguardando'},
+  'Atrasada':{cls:'r',key:'Atrasada'},
+  'Resolvida':{cls:'g',key:'Resolvida'}
 };
 
 let STATE = { records: [], team: [], obras: [], editingId: null, editingTeamId: null, editingObraId: null, confirmCb: null };
@@ -805,21 +849,23 @@ function waLink(r){
     `Pavimento/Apartamento: ${pavOf(r)||''}`,
     `Área externa: ${r.areaExterna||''}`,
     `Tipo de NC: ${r.tipo||''}`,
-    `Serviço: ${r.servico||''}`,
+    `Serviço: ${pesLabel(r.servico)||''}`,
     `Descrição: ${r.descNC||''}`,
-    `Registrado por: ${r.registradoPor||''}`,
+    `Registrado por: ${regOf(r)||''}`,
     `Prazo para correção: ${fmtBR(r.prazo)}`,
     'Favor verificar e realizar a tratativa dentro do prazo.'
   ];
-  if(isLink(r.fotoNC))   lines.push(`Foto da NC: ${r.fotoNC}`);
-  if(isLink(r.fotoCorr)) lines.push(`Foto da correção: ${r.fotoCorr}`);
+  if(isLink(r.fotoNC))   lines.push(`Evidência da NC: ${r.fotoNC}`);
+  if(isLink(r.fotoCorr)) lines.push(`Evidência da correção da NC: ${r.fotoCorr}`);
   lines.push('', 'Link para registrar correção:', corrigirUrl(r.id));
   return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
 
-/* ---------------- imagem ----------------
-   A foto é reduzida no aparelho e enviada (base64) ao Apps Script, que a
-   grava no Google Drive e devolve o link — na planilha fica só o link. */
+/* ---------------- evidência (imagem ou PDF) ----------------
+   Imagem: reduzida no aparelho e enviada (base64) ao Apps Script, que grava
+   no Drive e devolve o link. PDF: enviado em base64 (application/pdf) ao
+   Apps Script, que grava no Drive; na planilha fica só o link.
+   Campos internos seguem como fotoNC/fotoCorr (compatibilidade). */
 function fileToResizedDataURL(file, maxDim = 1280, quality = 0.7){
   return new Promise((resolve, reject) => {
     const img = new Image(), reader = new FileReader();
@@ -834,21 +880,34 @@ function fileToResizedDataURL(file, maxDim = 1280, quality = 0.7){
     img.onerror = reject; reader.readAsDataURL(file);
   });
 }
+function fileToDataURL(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(file); }); }
+function isPdfVal(v){ return typeof v==='string' && (/^data:application\/pdf/i.test(v) || /\.pdf(\?|#|$)/i.test(v)); }
+function baseName(v){ try{ return decodeURIComponent((v||'').split(/[?#]/)[0].split('/').pop()); }catch(e){ return ''; } }
 const photos = { fotoNC: null, fotoCorr: null };
+const photoNames = { fotoNC: '', fotoCorr: '' };
 function bindPhoto(inputId, key, prevId){
   $('#'+inputId).addEventListener('change', async e => {
     const file = e.target.files[0]; if(!file) return;
-    try { photos[key] = await fileToResizedDataURL(file); renderPhotoPreview(prevId, key); }
-    catch(err){ toast('Não foi possível ler a imagem.', 'err'); }
+    const isPdf = file.type==='application/pdf' || /\.pdf$/i.test(file.name||'');
+    try {
+      photos[key] = isPdf ? await fileToDataURL(file) : await fileToResizedDataURL(file);
+      photoNames[key] = file.name || '';
+      renderPhotoPreview(prevId, key);
+    } catch(err){ toast('Não foi possível ler o arquivo.', 'err'); }
     e.target.value = '';
   });
 }
 function renderPhotoPreview(prevId, key){
-  const box = $('#'+prevId);
-  if(!photos[key]){ box.innerHTML=''; return; }
-  box.innerHTML = `<div class="thumb"><img src="${photos[key]}" alt="Pré-visualização"><button class="rm" title="Remover">×</button></div>`;
-  box.querySelector('img').onclick = () => openLightbox(photos[key]);
-  box.querySelector('.rm').onclick = () => { photos[key] = null; renderPhotoPreview(prevId, key); };
+  const box = $('#'+prevId); if(!box) return;
+  const v = photos[key];
+  if(!v){ box.innerHTML=''; return; }
+  if(isPdfVal(v)){
+    box.innerHTML = `<div class="pdf-chip"><span class="ic">📄</span><span class="nm">${esc(photoNames[key]||baseName(v)||'PDF anexado')}</span><button class="rm" title="Remover">×</button></div>`;
+  } else {
+    box.innerHTML = `<div class="thumb"><img src="${v}" alt="Pré-visualização"><button class="rm" title="Remover">×</button></div>`;
+    box.querySelector('img').onclick = () => openLightbox(v);
+  }
+  box.querySelector('.rm').onclick = () => { photos[key] = null; photoNames[key]=''; renderPhotoPreview(prevId, key); };
 }
 
 /* ---------------- formulário ---------------- */
@@ -884,7 +943,7 @@ function clearForm(){
   ['f-obra','f-registrado','f-torre','f-pav-num','f-apto','f-area','f-servico','f-descNC','f-responsavel','f-responsavelTel','f-descCorr','f-obs','f-dataRes','f-prazo'].forEach(id=>{ const el=$('#'+id); if(el) el.value=''; });
   $('#f-tipo').value=''; $('#f-status').value='Aberta'; $('#f-dataId').value=todayISO(); $('#f-item').value=nextItemNumber();
   fillAptoSelect('', ''); fillTorreSelect('', '');
-  photos.fotoNC=null; photos.fotoCorr=null; renderPhotoPreview('prev-fotoNC','fotoNC'); renderPhotoPreview('prev-fotoCorr','fotoCorr');
+  photos.fotoNC=null; photos.fotoCorr=null; photoNames.fotoNC=''; photoNames.fotoCorr=''; renderPhotoPreview('prev-fotoNC','fotoNC'); renderPhotoPreview('prev-fotoCorr','fotoCorr');
   STATE.editingId=null; $('#formTitle').textContent='Registrar não conformidade';
   $('#btnSave').textContent='Salvar registro'; $('#btnCancel').style.display='none';
 }
@@ -892,6 +951,7 @@ async function saveRecord(){
   const dataId=$('#f-dataId').value, obra=$('#f-obra').value, tipo=$('#f-tipo').value,
         servico=$('#f-servico').value, registradoPor=$('#f-registrado').value,
         descNC=$('#f-descNC').value.trim(), status=$('#f-status').value;
+  if(normStatus(status)==='Resolvida' && !can('validar')){ toast('Seu perfil não pode marcar a NC como Resolvida.','err'); return; }
   if(!dataId){ toast('Informe a data da identificação.','err'); return; }
   if(!obra){ toast('Selecione a obra.','err'); return; }
   if(!tipo){ toast('Selecione o tipo de não conformidade.','err'); return; }
@@ -908,9 +968,9 @@ async function saveRecord(){
     item, dataId, obra,
     torre:$('#f-torre').value, pavimentoApartamento:pav, areaExterna:$('#f-area').value,
     local:'',
-    tipo, servico, registradoPor, descNC,
+    tipo, servico, registradoPor:normReg(registradoPor), descNC,
     fotoNC: photos.fotoNC, responsavel:$('#f-responsavel').value, responsavelTel:$('#f-responsavelTel').value.trim(),
-    prazo:$('#f-prazo').value, status, dataRes:$('#f-dataRes').value, descCorr:$('#f-descCorr').value.trim(),
+    prazo:$('#f-prazo').value, status, dataRes:($('#f-dataRes').value || (normStatus(status)==='Resolvida'?todayISO():'')), descCorr:$('#f-descCorr').value.trim(),
     fotoCorr: photos.fotoCorr, obs:$('#f-obs').value.trim(),
     criadoEm: existing ? existing.criadoEm : now, atualizadoEm: now
   };
@@ -937,6 +997,7 @@ function editRecord(id){
   $('#f-prazo').value=r.prazo||''; $('#f-status').value=normStatus(r.status); $('#f-dataRes').value=r.dataRes||'';
   $('#f-descCorr').value=r.descCorr||''; $('#f-obs').value=r.obs||'';
   photos.fotoNC=r.fotoNC||null; photos.fotoCorr=r.fotoCorr||null;
+  photoNames.fotoNC=baseName(r.fotoNC); photoNames.fotoCorr=baseName(r.fotoCorr);
   renderPhotoPreview('prev-fotoNC','fotoNC'); renderPhotoPreview('prev-fotoCorr','fotoCorr');
   $('#formTitle').textContent='Editar registro'; $('#btnSave').textContent='Atualizar registro'; $('#btnCancel').style.display='';
   go('form'); window.scrollTo({top:0,behavior:'smooth'});
@@ -952,6 +1013,7 @@ $('#confirmOk').onclick = async () => { const cb=STATE.confirmCb; STATE.confirmC
 
 /* ---------------- exclusão de registro ---------------- */
 function askDelete(id){
+  if(!can('excluir')){ toast('Seu perfil não pode excluir registros.','err'); return; }
   openConfirm('Excluir registro','Esta ação não pode ser desfeita. Deseja excluir este registro permanentemente?','Excluir',
     async()=>{ await StorageAPI.remove(id); toast('Registro excluído.','ok'); await refresh(); });
 }
@@ -969,7 +1031,7 @@ function getFiltered(){
     if(pav && !(pavOf(r).toLowerCase().includes(pav))) return false;
     if(area && !((r.areaExterna||'').toLowerCase().includes(area))) return false;
     if(resp && r.responsavel !== resp) return false;
-    if(reg && r.registradoPor !== reg) return false;
+    if(reg && regOf(r) !== reg) return false;
     if(tipo && r.tipo !== tipo) return false;
     if(serv && r.servico !== serv) return false;
     if(st && situacao(r) !== st) return false;
@@ -990,8 +1052,10 @@ function renderList(){
   if(!rows.length){ box.innerHTML = `<div class="card pad"><div class="empty"><h3>Nada encontrado</h3><p>Nenhum registro atende aos filtros.</p><button class="btn btn-ghost" onclick="clearFilters()">Limpar filtros</button></div></div>`; return; }
   box.innerHTML = rows.map(r=>{
     const sit=situacao(r), m=SIT_META[sit], occ=order[r.id], tot=byType[r.tipo];
-    const photosHtml = [r.fotoNC && {u:r.fotoNC,l:'NC'}, r.fotoCorr && {u:r.fotoCorr,l:'Correção'}].filter(Boolean)
-      .map(p=>`<img src="${p.u}" title="Foto da ${p.l}" data-img="${p.u}">`).join('');
+    const evid = (u,l)=> !u ? '' : ( isPdfVal(u)
+        ? `<a class="evid-pdf" href="${u}" target="_blank" rel="noopener">📄 Evidência da ${esc(l)} (PDF)</a>`
+        : `<img src="${u}" title="Evidência da ${esc(l)}" data-img="${u}">` );
+    const photosHtml = [evid(r.fotoNC,'NC'), evid(r.fotoCorr,'correção da NC')].filter(Boolean).join('');
     const wa = r.responsavel ? `<a class="btn btn-wa btn-sm" href="${waLink(r)}" target="_blank" rel="noopener">Enviar alerta no WhatsApp</a>` : '';
     return `<div class="card mb rec st-${m.key}">
       <div class="rec-top">
@@ -1007,9 +1071,9 @@ function renderList(){
         ${torreOf(r)?`<span>🏢 Torre: <b>${esc(torreOf(r))}</b></span>`:''}
         ${pavOf(r)?`<span>📍 Pav./Apto.: <b>${esc(pavOf(r))}</b></span>`:''}
         ${r.areaExterna?`<span>🌳 Área externa: <b>${esc(r.areaExterna)}</b></span>`:''}
-        ${r.servico?`<span>🛠 Serviço: <b>${esc(r.servico)}</b></span>`:''}
+        ${r.servico?`<span>🛠 Serviço: <b>${esc(pesLabel(r.servico))}</b></span>`:''}
         ${r.responsavel?`<span>👤 Resp.: <b>${esc(r.responsavel)}</b></span>`:''}
-        ${r.registradoPor?`<span>📝 Registrado por: <b>${esc(r.registradoPor)}</b></span>`:''}
+        ${regOf(r)?`<span>📝 Registrado por: <b>${esc(regOf(r))}</b></span>`:''}
         <span>⏱ Prazo: <b>${fmtBR(r.prazo)}</b></span>
         ${normStatus(r.status)==='Resolvida'?`<span>✓ Resolvida em <b>${fmtBR(r.dataRes)}</b></span>`:''}
       </div>
@@ -1019,7 +1083,7 @@ function renderList(){
       ${photosHtml?`<div class="rec-photos">${photosHtml}</div>`:''}
       <div class="rec-actions">
         <button class="btn btn-ghost btn-sm" onclick="editRecord('${r.id}')">✎ Editar</button>
-        <button class="btn btn-ghost btn-sm" onclick="askDelete('${r.id}')">🗑 Excluir</button>
+        ${can('excluir')?`<button class="btn btn-ghost btn-sm" onclick="askDelete('${r.id}')">🗑 Excluir</button>`:''}
         ${wa}
       </div>
     </div>`;
@@ -1030,118 +1094,109 @@ function clearFilters(){ ['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-are
 
 /* ---------------- painel ---------------- */
 let charts = {};
-function renderDashboard(){
-  const recs = STATE.records;
+function statsOf(recs){
+  const cntS = s => recs.filter(r=>situacao(r)===s).length;
   const total=recs.length;
-  const cnt = s => recs.filter(r=>situacao(r)===s).length;
-  const aberta=cnt('Aberta'), trat=cnt('Em Tratativa'), aguard=cnt('Aguardando'), atr=cnt('Atrasado');
+  const abertasNoPrazo = recs.filter(r=>{ const s=situacao(r); return s==='Aberta'||s==='Aberta (dentro do prazo)'; }).length;
+  const aguard=cntS('Aguardando');
   const resol=recs.filter(r=>normStatus(r.status)==='Resolvida').length;
-  $('#k-total').textContent=total; $('#k-aberta').textContent=aberta; $('#k-trat').textContent=trat;
-  $('#k-aguard').textContent=aguard; $('#k-resol').textContent=resol; $('#k-atr').textContent=atr;
-  $('#k-resol-s').textContent = total ? Math.round(resol/total*100)+'% do total' : '';
-  // tempo médio de resolução (dias) e índice de resolução no prazo
-  const resolvidas = recs.filter(r=>normStatus(r.status)==='Resolvida' && r.dataId && r.dataRes);
-  if(resolvidas.length){
-    const dias = resolvidas.map(r=>Math.max(0,Math.round((parseISO(r.dataRes)-parseISO(r.dataId))/86400000)));
-    const media = dias.reduce((a,b)=>a+b,0)/dias.length;
-    $('#k-tmr').textContent = media.toFixed(1).replace('.',',')+' dias';
-    const comPrazo = resolvidas.filter(r=>r.prazo);
-    if(comPrazo.length){ const noPrazo=comPrazo.filter(r=>parseISO(r.dataRes)<=parseISO(r.prazo)).length;
-      $('#k-prazo').textContent = Math.round(noPrazo/comPrazo.length*100)+'%'; } else $('#k-prazo').textContent='—';
-  } else { $('#k-tmr').textContent='—'; $('#k-prazo').textContent='—'; }
-
-  renderReincRank(recs); renderTop3Geral(recs); renderTop3Serv(recs); renderTop3Resp(recs); renderObraTop3(recs);
+  const atr=cntS('Atrasada');
+  const rv=recs.filter(r=>normStatus(r.status)==='Resolvida' && r.dataId && r.dataRes);
+  let tmr='—';
+  if(rv.length){ const dias=rv.map(r=>Math.max(0,Math.round((parseISO(r.dataRes)-parseISO(r.dataId))/86400000)));
+    tmr=(dias.reduce((a,b)=>a+b,0)/dias.length).toFixed(1).replace('.',',')+' dias'; }
+  let taxa='—'; const cp=rv.filter(r=>r.prazo);
+  if(cp.length){ const np=cp.filter(r=>parseISO(r.dataRes)<=parseISO(r.prazo)).length; taxa=Math.round(np/cp.length*100)+'%'; }
+  return {total, abertasNoPrazo, aguard, resol, atr, tmr, taxa};
+}
+function kpiGridHtml(s){
+  return `<div class="kg kg-sm mb">
+    <div class="kpi"><div class="kl">Total de NCs</div><div class="kv">${s.total}</div></div>
+    <div class="kpi b"><div class="kl">Abertas (dentro do prazo)</div><div class="kv">${s.abertasNoPrazo}</div></div>
+    <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv">${s.aguard}</div></div>
+    <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv">${s.resol}</div></div>
+    <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv">${s.atr}</div></div>
+    <div class="kpi s"><div class="kl">Tempo médio de resolução</div><div class="kv" style="font-size:20px">${s.tmr}</div></div>
+    <div class="kpi b"><div class="kl">Resolução no prazo</div><div class="kv">${s.taxa}</div></div>
+  </div>`;
+}
+function statusDonut(id, arr, C){
+  const cntS=s=>arr.filter(r=>situacao(r)===s).length;
+  const abertasNoPrazo=arr.filter(r=>{ const s=situacao(r); return s==='Aberta'||s==='Aberta (dentro do prazo)'; }).length;
+  const data=[abertasNoPrazo, cntS('Aguardando'), cntS('Atrasada'), arr.filter(r=>normStatus(r.status)==='Resolvida').length];
+  mkChart(id,{type:'doughnut',
+    data:{labels:['Abertas (no prazo)','Aguardando validação','Atrasadas','Resolvidas'],
+      datasets:[{data,backgroundColor:[C.blue,C.violet,C.red,C.green],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:7,font:{size:10}}}}}});
+}
+function torreBar(id, arr, C){
+  const t=tally(arr,r=>torreOf(r));
+  mkChart(id,{type:'bar',
+    data:{labels:t.map(x=>x[0]),datasets:[{data:t.map(x=>x[1]),backgroundColor:C.blue,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+}
+function renderDashboard(){
+  const recs=STATE.records; const total=recs.length;
+  const g=statsOf(recs);
+  $('#k-total').textContent=g.total; $('#k-aberta').textContent=g.abertasNoPrazo;
+  $('#k-aguard').textContent=g.aguard; $('#k-resol').textContent=g.resol; $('#k-atr').textContent=g.atr;
+  $('#k-tmr').textContent=g.tmr; $('#k-prazo').textContent=g.taxa;
+  $('#k-resol-s').textContent = total ? Math.round(g.resol/total*100)+'% do total' : '';
+  renderReincRank(recs); renderTop3TiposGeral(recs); renderTop3Serv(recs);
   $('#dashEmpty').innerHTML = total ? '' :
     `<div class="card pad"><div class="empty"><h3>Sem dados para o painel</h3><p>Registre NCs para ver os indicadores e gráficos.</p><button class="btn btn-primary" onclick="go('form')">Registrar NC</button> <button class="btn btn-ghost" id="seedBtn2" style="margin-left:8px">Carregar exemplos</button></div></div>`;
-  if(!total){ if($('#seedBtn2')) $('#seedBtn2').onclick=seedExamples; Object.values(charts).forEach(c=>c&&c.destroy()); charts={}; return; }
+  if(!total){ if($('#seedBtn2')) $('#seedBtn2').onclick=seedExamples; Object.values(charts).forEach(c=>c&&c.destroy()); charts={}; if($('#obrasBlocks')) $('#obrasBlocks').innerHTML=''; return; }
 
   const C={red:'#bf2e2e',amber:'#e08818',green:'#2a6735',greenM:'#469958',blue:'#4678cc',blueD:'#1850a0',violet:'#7a2bbf',slate:'#5f6b78',txt:'#6a6860',grid:'rgba(0,0,0,.08)'};
   Chart.defaults.font.family="'DM Sans',sans-serif"; Chart.defaults.color=C.txt;
 
-  // NCs por status e por responsável — um gráfico separado por obra
-  renderStatusPorObra(recs, C);
-  renderRespPorObra(recs, C);
-
-  // NCs por torre — um gráfico separado por obra
-  renderTorrePorObra(recs, C);
-
+  statusDonut('chStatusGeral', recs, C);
   const obraCount=tally(recs,r=>r.obra||'(sem obra)');
   mkChart('chObra',{type:'bar',
     data:{labels:obraCount.map(x=>x[0]),datasets:[{data:obraCount.map(x=>x[1]),backgroundColor:C.green,borderRadius:4}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
       scales:{x:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+  renderObrasBlocks(recs, C);
 }
-function renderStatusPorObra(recs, C){
-  const box=$('#statusPorObra'); if(!box) return;
-  Object.keys(charts).forEach(id=>{ if(id.indexOf('chStatus_')===0){ charts[id].destroy(); delete charts[id]; } });
-  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
-  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
-  box.innerHTML = ordered.map(([o,arr],i)=>
-    `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
-      <div class="chart-box" style="height:230px"><canvas id="chStatus_${i}"></canvas></div></div>`).join('');
-  ordered.forEach(([o,arr],i)=>{
-    const c = s => arr.filter(r=>situacao(r)===s).length;
-    const dataArr=[c('Aberta'),c('Em Tratativa'),c('Aguardando'),c('Atrasado'),arr.filter(r=>normStatus(r.status)==='Resolvida').length];
-    mkChart('chStatus_'+i,{type:'doughnut',
-      data:{labels:['Abertas','Em tratativa','Aguardando validação','Atrasadas','Resolvidas'],
-        datasets:[{data:dataArr,backgroundColor:[C.blue,C.amber,C.violet,C.red,C.green],borderWidth:0,hoverOffset:6}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:7,font:{size:10}}}}}});
-  });
-}
-function renderRespPorObra(recs, C){
-  const box=$('#respPorObra'); if(!box) return;
-  Object.keys(charts).forEach(id=>{ if(id.indexOf('chResp_')===0){ charts[id].destroy(); delete charts[id]; } });
-  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
-  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
-  box.innerHTML = ordered.map(([o,arr],i)=>{
-    const nResp=new Set(arr.map(r=>r.responsavel||'(não informado)')).size;
-    const h=Math.max(140, nResp*30+44);
-    return `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
-      <div class="chart-box" style="height:${h}px"><canvas id="chResp_${i}"></canvas></div></div>`;
-  }).join('');
-  ordered.forEach(([o,arr],i)=>{
-    const m={}; arr.forEach(r=>{ const k=r.responsavel||'(não informado)'; if(!m[k])m[k]={resol:0,aberto:0};
-      if(normStatus(r.status)==='Resolvida') m[k].resol++; else m[k].aberto++; });
-    const a=Object.entries(m).sort((x,y)=>(y[1].resol+y[1].aberto)-(x[1].resol+x[1].aberto));
-    mkChart('chResp_'+i,{type:'bar',
-      data:{labels:a.map(x=>x[0]),datasets:[
-        {label:'Resolvidas',data:a.map(x=>x[1].resol),backgroundColor:C.greenM,borderRadius:3,stack:'s'},
-        {label:'Em aberto',data:a.map(x=>x[1].aberto),backgroundColor:C.amber,borderRadius:3,stack:'s'}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},
-        scales:{x:{stacked:true,grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
-  });
-}
-function renderTorrePorObra(recs, C){
-  const box=$('#torrePorObra'); if(!box) return;
-  // destrói gráficos de torre da renderização anterior
-  Object.keys(charts).forEach(id=>{ if(id.indexOf('chTorre_')===0){ charts[id].destroy(); delete charts[id]; } });
-  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
-  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
-  box.innerHTML = ordered.map(([o,arr],i)=>{
-    const n=tally(arr,r=>torreOf(r)).length;
-    const h=Math.max(120, n*32+30);
-    return `<div class="torre-ob"><div class="torre-ob-h"><b>${esc(o)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
-      <div class="chart-box" style="height:${h}px"><canvas id="chTorre_${i}"></canvas></div></div>`;
-  }).join('');
-  ordered.forEach(([o,arr],i)=>{
-    const t=tally(arr,r=>torreOf(r));
-    mkChart('chTorre_'+i,{type:'bar',
-      data:{labels:t.map(x=>x[0]),datasets:[{data:t.map(x=>x[1]),backgroundColor:C.blue,borderRadius:4}]},
-      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{x:{grid:{color:C.grid},ticks:{stepSize:1,precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
-  });
+function renderTop3TiposGeral(recs){
+  const box=$('#top3TiposGeral'); if(!box) return;
+  const top=topTipos(recs,3);
+  box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem dados.</p>';
 }
 function renderTop3Serv(recs){
   const box=$('#top3Serv'); if(!box) return;
-  const top=tally(recs.filter(r=>r.servico),r=>r.servico).slice(0,3);
+  const top=tally(recs.filter(r=>r.servico),r=>pesLabel(r.servico)).slice(0,3);
   box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem serviços informados.</p>';
 }
-function renderTop3Resp(recs){
-  const box=$('#top3Resp'); if(!box) return;
-  const top=tally(recs.filter(r=>r.responsavel),r=>r.responsavel).slice(0,3);
-  box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem responsáveis informados.</p>';
+/* Blocos por obra: tudo de cada obra junto (KPIs + status + torre + tops) */
+function renderObrasBlocks(recs, C){
+  const box=$('#obrasBlocks'); if(!box) return;
+  Object.keys(charts).forEach(id=>{ if(id.indexOf('obStatus_')===0||id.indexOf('obTorre_')===0){ charts[id].destroy(); delete charts[id]; } });
+  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
+  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
+  const rk=(a,t)=> a.length?rankRows(a):`<p class="muted" style="font-size:13px">${t}</p>`;
+  box.innerHTML = ordered.map(([o,arr],i)=>{
+    const nTorre=tally(arr,r=>torreOf(r)).length; const hT=Math.max(130,nTorre*32+34);
+    const t3t=topTipos(arr,3), t3s=tally(arr.filter(r=>r.servico),r=>pesLabel(r.servico)).slice(0,3), t3r=tally(arr.filter(r=>r.responsavel),r=>r.responsavel).slice(0,3);
+    return `<div class="card pad mb obra-block">
+      <div class="ct obra-h">Obra: ${esc(o)}</div><div class="ct-sub">${arr.length} não conformidade${arr.length>1?'s':''}</div>
+      ${kpiGridHtml(statsOf(arr))}
+      <div class="g2 mb">
+        <div class="card pad"><div class="ct">NCs por status</div><div class="chart-box" style="height:220px"><canvas id="obStatus_${i}"></canvas></div></div>
+        <div class="card pad"><div class="ct">NCs por torre</div><div class="chart-box" style="height:${hT}px"><canvas id="obTorre_${i}"></canvas></div></div>
+      </div>
+      <div class="g3">
+        <div class="card pad"><div class="ct">Top 3 tipos de NC</div>${rk(t3t,'—')}</div>
+        <div class="card pad"><div class="ct">Top 3 serviços</div>${rk(t3s,'Sem serviços informados.')}</div>
+        <div class="card pad"><div class="ct">Top 3 responsáveis</div>${rk(t3r,'Sem responsáveis informados.')}</div>
+      </div>
+    </div>`;
+  }).join('');
+  ordered.forEach(([o,arr],i)=>{ statusDonut('obStatus_'+i, arr, C); torreBar('obTorre_'+i, arr, C); });
 }
+
 function renderReincRank(recs){
   const box=$('#reincRank');
   if(!recs.length){ box.innerHTML='<p class="muted" style="font-size:13px">Sem dados ainda.</p>'; return; }
@@ -1162,28 +1217,12 @@ function torreOf(r){ return (r.torre && String(r.torre).trim()) ? String(r.torre
 function pavOf(r){ return (r.pavimentoApartamento && String(r.pavimentoApartamento).trim()) ? r.pavimentoApartamento : (r.local||''); }
 function tally(arr, fn){ const m={}; arr.forEach(r=>{ const k=fn(r)||'(n/d)'; m[k]=(m[k]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); }
 function topTipos(arr, n=3){ const m={}; arr.forEach(r=>{ m[r.tipo]=(m[r.tipo]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,n); }
-function renderTop3Geral(recs){
-  const box=$('#top3Geral'); if(!box) return;
-  const top=topTipos(recs,3);
-  box.innerHTML = top.length ? '<span class="top3-label">Top 3 geral:</span>'+
-    top.map(([t,c],i)=>`<span class="top3-chip"><span class="pos">${i+1}º</span> ${esc(t)} <span class="n">${c}</span></span>`).join('') : '';
-}
 function rankRows(top){
   const max=top[0][1];
   return top.map(([t,c],i)=>`<div class="rank-row${i===0?' top':''}">
     <div class="rank-n">${i+1}º</div>
     <div><div class="rank-name">${esc(t)}</div><div class="rank-bar"><i style="width:${Math.round(c/max*100)}%"></i></div></div>
     <div class="rank-count">${c} <span class="rank-u">${c===1?'ocorrência':'ocorrências'}</span></div>
-  </div>`).join('');
-}
-function renderObraTop3(recs){
-  const box=$('#obraTop3'); if(!box) return;
-  if(!recs.length){ box.innerHTML='<p class="muted" style="font-size:13px">Sem dados ainda.</p>'; return; }
-  const obras={}; recs.forEach(r=>{ const o=r.obra||'(sem obra)'; (obras[o]=obras[o]||[]).push(r); });
-  const ordered=Object.entries(obras).sort((a,b)=>b[1].length-a[1].length);
-  box.innerHTML=ordered.map(([obra,arr])=>`<div class="obra-block">
-    <div class="obra-h"><b>${esc(obra)}</b><span class="tot">${arr.length} NC${arr.length>1?'s':''}</span></div>
-    ${rankRows(topTipos(arr,3))}
   </div>`).join('');
 }
 function countBy(arr,key,withStatus){
@@ -1194,7 +1233,7 @@ function countBy(arr,key,withStatus){
 }
 
 /* ---------------- exportar ---------------- */
-const SITLABEL = {'Aberta':'Aberta','Em Tratativa':'Em tratativa','Aguardando':'Aguardando validação','Atrasado':'Atrasada','Resolvida':'Resolvida'};
+const SITLABEL = {'Aberta':'Aberta','Aberta (dentro do prazo)':'Aberta (dentro do prazo)','Aguardando':'Aguardando validação','Atrasada':'Atrasada','Resolvida':'Resolvida'};
 
 function rowsForExport(records){
   const recs = records || getFiltered();
@@ -1207,10 +1246,10 @@ function rowsForExport(records){
     'Pavimento / Apartamento': pavOf(r),
     'Área externa': r.areaExterna||'',
     'Tipo de NC': r.tipo||'',
-    'Serviço (PES)': r.servico||'',
+    'Serviço (PES)': pesLabel(r.servico)||'',
     'Descrição da NC': r.descNC||'',
-    'Registrado por': r.registradoPor||'',
-    'Foto NC': r.fotoNC?'Sim':'Não',
+    'Registrado por': regOf(r)||'',
+    'Evidência da NC': r.fotoNC?'Sim':'Não',
     'Responsável': r.responsavel||'',
     'Telefone': r.responsavelTel||'',
     'Prazo': fmtBR(r.prazo),
@@ -1218,7 +1257,7 @@ function rowsForExport(records){
     'Situação': SITLABEL[situacao(r)]||situacao(r),
     'Data resolução': fmtBR(r.dataRes),
     'Descrição da correção': r.descCorr||'',
-    'Foto correção': r.fotoCorr?'Sim':'Não',
+    'Evidência da correção da NC': r.fotoCorr?'Sim':'Não',
     'Observações': r.obs||'',
     'Ocorrência deste tipo (nº)': order[r.id]||'',
     'Total de ocorrências do tipo': byType[r.tipo]||''
@@ -1234,17 +1273,17 @@ function relRowsForExport(records){
     'Pavimento / Apartamento': pavOf(r),
     'Área externa': r.areaExterna||'',
     'Tipo de NC': r.tipo||'',
-    'Serviço (PES)': r.servico||'',
+    'Serviço (PES)': pesLabel(r.servico)||'',
     'Descrição da NC': r.descNC||'',
-    'Registrado por': r.registradoPor||'',
+    'Registrado por': regOf(r)||'',
     'Responsável': r.responsavel||'',
     'Prazo': fmtBR(r.prazo),
     'Status': normStatus(r.status),
     'Situação': SITLABEL[situacao(r)]||situacao(r),
     'Data da resolução': fmtBR(r.dataRes),
     'Descrição da correção': r.descCorr||'',
-    'Link foto NC': r.fotoNC||'',
-    'Link foto correção': r.fotoCorr||''
+    'Link evidência da NC': r.fotoNC||'',
+    'Link evidência da correção da NC': r.fotoCorr||''
   }));
 }
 function exportCSV(rows, filename){
@@ -1268,9 +1307,9 @@ function download(blob,name){ const u=URL.createObjectURL(blob),a=document.creat
 function refreshSelectors(){
   const baseNomes = STATE.team.map(r=>r.nome);
   const resps=[...new Set([...baseNomes, ...STATE.records.map(r=>r.responsavel).filter(Boolean)])].sort();
-  const registrantes=[...new Set([...baseNomes, ...STATE.records.map(r=>r.registradoPor).filter(Boolean)])].sort();
+  const registrantes=[...new Set([...baseNomes.map(normReg), ...STATE.records.map(regOf).filter(Boolean)])].sort();
   const obras=[...new Set([...STATE.obras.map(o=>o.obra), ...STATE.records.map(r=>r.obra), ...Object.keys(TORRES_POR_OBRA)].filter(Boolean))].sort();
-  const servicosUsados=[...new Set([...SERVICOS, ...STATE.records.map(r=>r.servico).filter(Boolean)])];
+  const servicosUsados=[...new Set([...SERVICOS, ...STATE.records.map(r=>pesLabel(r.servico)).filter(Boolean)])];
   const torres=[...new Set([...TORRES_SUG, ...Object.values(TORRES_POR_OBRA).flat(), ...STATE.records.map(r=>torreOf(r))].filter(v=>v&&v!=='Sem torre'))]
     .sort((a,b)=>a.localeCompare(b,'pt',{numeric:true}));
   const opt = (arr, cur) => arr.map(v=>`<option ${v===cur?'selected':''}>${esc(v)}</option>`).join('');
@@ -1305,6 +1344,7 @@ function maybeRefreshItem(){
   $('#f-item').value = nextItemNumber(); // novo: mostra o próximo número sequencial
 }
 function go(tab){
+  if(tab==='rel' && !can('relatorios')){ toast('Seu perfil não tem acesso aos relatórios completos.','err'); return; }
   $$('.nt').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   $$('.pg').forEach(p=>p.classList.toggle('active', p.id===tab));
   if(tab==='dash') renderDashboard();
@@ -1327,17 +1367,14 @@ function relFiltered(){
     if(de && (!r.dataId || r.dataId<de)) return false;
     if(ate && (!r.dataId || r.dataId>ate)) return false;
     if(tipo && r.tipo!==tipo) return false;
-    if(serv && r.servico!==serv) return false;
+    if(serv && pesLabel(r.servico)!==serv) return false;
     if(resp && r.responsavel!==resp) return false;
-    if(reg && r.registradoPor!==reg) return false;
+    if(reg && regOf(r)!==reg) return false;
     if(obra && r.obra!==obra) return false;
     if(torre && torreOf(r)!==torre) return false;
     if(pav && !(pavOf(r).toLowerCase().includes(pav))) return false;
     if(area && !((r.areaExterna||'').toLowerCase().includes(area))) return false;
-    if(sit){
-      if(sit==='no-prazo'){ if(normStatus(r.status)==='Resolvida' || isOverdue(r)) return false; }
-      else if(situacao(r)!==sit) return false;
-    }
+    if(sit && situacao(r)!==sit) return false;
     return true;
   }).sort((a,b)=> (b.dataId||'').localeCompare(a.dataId||'') || (b.criadoEm||'').localeCompare(a.criadoEm||''));
 }
@@ -1352,15 +1389,13 @@ function describeFilters(){
   if(v('rel-registrado')) p.push('Registrado por: '+v('rel-registrado'));
   if(v('rel-tipo')) p.push('Tipo: '+v('rel-tipo'));
   if(v('rel-servico')) p.push('Serviço: '+v('rel-servico'));
-  if(v('rel-sit')){ const s=v('rel-sit'); p.push('Situação: '+(s==='no-prazo'?'Dentro do prazo':(SITLABEL[s]||s))); }
+  if(v('rel-sit')){ const s=v('rel-sit'); p.push('Situação: '+(SITLABEL[s]||s)); }
   return p.length ? p.join('  ·  ') : 'Todos os registros';
 }
 function renderReport(){
   const rows=relFiltered();
   const total=rows.length;
-  const cnt = s => rows.filter(r=>situacao(r)===s).length;
-  const aberta=cnt('Aberta'), trat=cnt('Em Tratativa'), aguard=cnt('Aguardando'), atr=cnt('Atrasado');
-  const resol=rows.filter(r=>normStatus(r.status)==='Resolvida').length;
+  const g=statsOf(rows);
   $('#relPrintMeta').textContent = describeFilters() + '  ·  Gerado em ' + fmtBR(todayISO());
 
   if(!total){
@@ -1369,33 +1404,34 @@ function renderReport(){
   }
   const kpis = `<div class="kg mb">
     <div class="kpi"><div class="kl">Total de NCs</div><div class="kv">${total}</div></div>
-    <div class="kpi b"><div class="kl">Abertas</div><div class="kv">${aberta}</div></div>
-    <div class="kpi a"><div class="kl">Em tratativa</div><div class="kv">${trat}</div></div>
-    <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv">${aguard}</div></div>
-    <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv">${atr}</div></div>
-    <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv">${resol}</div></div>
+    <div class="kpi b"><div class="kl">Abertas (dentro do prazo)</div><div class="kv">${g.abertasNoPrazo}</div></div>
+    <div class="kpi v"><div class="kl">Aguardando validação</div><div class="kv">${g.aguard}</div></div>
+    <div class="kpi r"><div class="kl">Atrasadas</div><div class="kv">${g.atr}</div></div>
+    <div class="kpi g"><div class="kl">Resolvidas</div><div class="kv">${g.resol}</div></div>
+    <div class="kpi s"><div class="kl">Tempo médio de resolução</div><div class="kv" style="font-size:20px">${g.tmr}</div></div>
+    <div class="kpi b"><div class="kl">Resolução no prazo</div><div class="kv">${g.taxa}</div></div>
   </div>`;
 
   const tipoRank=tally(rows,r=>r.tipo||'(sem tipo)');
   const respRank=tally(rows.filter(r=>r.responsavel),r=>r.responsavel);
-  const servRank=tally(rows.filter(r=>r.servico),r=>r.servico);
+  const servRank=tally(rows.filter(r=>r.servico),r=>pesLabel(r.servico));
   const ranks = `<div class="g2 mb">
     <div class="card pad"><div class="ct">Ranking por tipo de NC</div>${rankRows(tipoRank)}</div>
     <div class="card pad"><div class="ct">Ranking por responsável</div>${respRank.length?rankRows(respRank):'<p class="muted" style="font-size:13px">—</p>'}</div>
   </div>
   <div class="card pad mb"><div class="ct">Ranking por serviço (PES)</div>${servRank.length?rankRows(servRank):'<p class="muted" style="font-size:13px">—</p>'}</div>`;
 
-  const head=['Item','Data','Obra','Torre','Pav./Apto.','Área externa','Tipo de NC','Serviço','Descrição','Registrado por','Responsável','Prazo','Situação','Data resolução','Correção','Foto NC','Foto corr.'];
+  const head=['Item','Data','Obra','Torre','Pav./Apto.','Área externa','Tipo de NC','Serviço','Descrição','Registrado por','Responsável','Prazo','Situação','Data resolução','Correção','Evidência da NC','Evidência da correção'];
   const body=rows.map(r=>{
     const sit=situacao(r), key=SIT_META[sit].key, lab=SITLABEL[sit]||sit;
     const link=(u,t)=> u?`<a href="${u}" target="_blank" rel="noopener">${t}</a>`:'—';
     return `<tr>
       <td>${esc(r.item)}</td><td>${fmtBR(r.dataId)}</td><td>${esc(r.obra)}</td>
       <td>${esc(torreOf(r))}</td><td>${esc(pavOf(r))}</td><td>${esc(r.areaExterna)}</td>
-      <td>${esc(r.tipo)}</td><td>${esc(r.servico)}</td><td>${esc(r.descNC)}</td>
-      <td>${esc(r.registradoPor)}</td><td>${esc(r.responsavel)}</td><td>${fmtBR(r.prazo)}</td>
+      <td>${esc(r.tipo)}</td><td>${esc(pesLabel(r.servico))}</td><td>${esc(r.descNC)}</td>
+      <td>${esc(regOf(r))}</td><td>${esc(r.responsavel)}</td><td>${fmtBR(r.prazo)}</td>
       <td class="st st-${key}">${lab}</td><td>${fmtBR(r.dataRes)}</td>
-      <td>${esc(r.descCorr)}</td><td>${link(r.fotoNC,'Ver foto')}</td><td>${link(r.fotoCorr,'Ver foto')}</td>
+      <td>${esc(r.descCorr)}</td><td>${link(r.fotoNC,isPdfVal(r.fotoNC)?'Abrir PDF':'Abrir evidência')}</td><td>${link(r.fotoCorr,isPdfVal(r.fotoCorr)?'Abrir PDF':'Abrir evidência')}</td>
     </tr>`;
   }).join('');
   const table = `<div class="card pad"><div class="ct">Lista detalhada das NCs</div>
@@ -1410,8 +1446,8 @@ function initRel(){
   $('#rel-clear').onclick=()=>{ ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).value=''); renderReport(); };
   $$('.rel-quick [data-q]').forEach(b=> b.onclick=()=>{
     const q=b.dataset.q;
-    if(q==='noprazo'){ $('#rel-sit').value='no-prazo'; }
-    else if(q==='atrasada'){ $('#rel-sit').value='Atrasado'; }
+    if(q==='noprazo'){ $('#rel-sit').value='Aberta (dentro do prazo)'; }
+    else if(q==='atrasada'){ $('#rel-sit').value='Atrasada'; }
     else { $('#rel-sit').value=''; }
     renderReport();
   });
@@ -1580,7 +1616,7 @@ function enterFixMode(id){
   photos.fotoCorr = (typeof nc.fotoCorr==='string' && nc.fotoCorr.indexOf('http')===0) ? nc.fotoCorr : null;
   renderPhotoPreview('prev-fixCorr','fotoCorr');
   const st = normStatus(nc.status);
-  const jaTratada = (st==='Resolvida' || st==='Aguardando Validação da Qualidade');
+  const jaTratada = (st==='Resolvida' || st==='Aguardando validação');
   $('#fix .ct').textContent = jaTratada ? 'Atualizar correção da NC' : 'Registrar correção da NC';
   $('#fix .ct-sub').innerHTML = jaTratada
     ? 'Esta NC já possui uma tratativa registrada. Você pode atualizar a descrição e a foto da correção. Os dados da NC não podem ser alterados.'
@@ -1596,13 +1632,17 @@ function renderFixInfo(nc){
     fi('Pavimento / Apartamento', pavOf(nc)) +
     fi('Área externa', nc.areaExterna) +
     fi('Tipo da NC', nc.tipo) +
-    fi('Serviço', nc.servico) +
+    fi('Serviço', pesLabel(nc.servico)) +
     fi('Registrado por', nc.registradoPor) +
     fi('Descrição da NC', nc.descNC, true);
   const f=nc.fotoNC;
   if(f && typeof f==='string' && f.indexOf('http')===0){
-    $('#fixPhotoNC').innerHTML = `<div class="fix-ncphoto"><div class="cap">Foto da NC</div><img src="${f}" alt="Foto da NC"></div>`;
-    $('#fixPhotoNC img').onclick=()=>openLightbox(f);
+    if(isPdfVal(f)){
+      $('#fixPhotoNC').innerHTML = `<div class="fix-ncphoto"><div class="cap">Evidência da NC</div><a class="evid-pdf" href="${f}" target="_blank" rel="noopener">📄 Abrir evidência (PDF)</a></div>`;
+    } else {
+      $('#fixPhotoNC').innerHTML = `<div class="fix-ncphoto"><div class="cap">Evidência da NC</div><img src="${f}" alt="Evidência da NC"></div>`;
+      $('#fixPhotoNC img').onclick=()=>openLightbox(f);
+    }
   } else $('#fixPhotoNC').innerHTML='';
 }
 async function submitFix(){
@@ -1612,7 +1652,7 @@ async function submitFix(){
   const updated = Object.assign({}, nc, {
     descCorr: desc,
     fotoCorr: photos.fotoCorr,
-    status: 'Aguardando Validação da Qualidade',  // a Qualidade valida e marca como Resolvida
+    status: 'Aguardando validação',  // a Qualidade valida e marca como Resolvida
     dataRes: todayISO(),
     atualizadoEm: new Date().toISOString()
   });
@@ -1652,26 +1692,26 @@ const UBC_TIPO_MAP = {
   'Executado em desconformidade com o projeto':'Executado em desacordo com o projeto'
 };
 const UBC_FVS_PES = [
-  ['FVS.025.1.1','PES 025.1 - V11 - Instalações hidrossanitárias'],
-  ['FVS.025.1','PES 025.1 - V11 - Instalações hidrossanitárias'],
-  ['FVS.011.2','PES 011.2 - V4 - Execução de revestimento de parede'],
-  ['FVS.013.1','PES 013.1 - V6 - Revestimento cerâmico - piso e parede'],
-  ['FVS.009.1','PES 009.1 - V5 - Execução de alvenaria estrutural'],
-  ['FVS.024.1','PES 024.1 - V3 - Instalações elétricas'],
-  ['FVS.006.3','PES 006.3 - V0 - Execução de Laje maciça'],
-  ['FVS.6.3','PES 006.3 - V0 - Execução de Laje maciça'],
-  ['FVS.031','PES 031 - V1 - Execução fechamento de shaft com eps'],
-  ['FVS.030','PES 030 - V8 - Paredes em drywall'],
-  ['FVS.020','PES 020 - V7 - Forro em placa de gesso'],
-  ['FVS.027','PES 027 - V4 - Instalações de guarda corpo _ gradil metálico'],
-  ['FVS.035','PES 035 - V3 - Instalação de gás encanado']
+  ['FVS.025.1.1','PES 025.1 - Instalações hidrossanitárias'],
+  ['FVS.025.1','PES 025.1 - Instalações hidrossanitárias'],
+  ['FVS.011.2','PES 011.2 - Execução de revestimento de parede'],
+  ['FVS.013.1','PES 013.1 - Revestimento cerâmico - piso e parede'],
+  ['FVS.009.1','PES 009.1 - Execução de alvenaria estrutural'],
+  ['FVS.024.1','PES 024.1 - Instalações elétricas'],
+  ['FVS.006.3','PES 006.3 - Execução de Laje maciça'],
+  ['FVS.6.3','PES 006.3 - Execução de Laje maciça'],
+  ['FVS.031','PES 031 - Execução fechamento de shaft com eps'],
+  ['FVS.030','PES 030 - Paredes em drywall'],
+  ['FVS.020','PES 020 - Forro em placa de gesso'],
+  ['FVS.027','PES 027 - Instalações de guarda corpo _ gradil metálico'],
+  ['FVS.035','PES 035 - Instalação de gás encanado']
 ];
 function ubcPes(fv){ if(!fv) return ''; for(const [k,v] of UBC_FVS_PES){ if(fv.indexOf(k)===0) return v; } return ''; }
 const UBC_DATA = [{"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 107", "ar": "", "fv": "FVS.031", "en": "FVS não foi aberta. A base já se encontra fixada.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 106; Térreo - Apto 005", "ar": "", "fv": "FVS.030", "en": "FVS sem acompanhamento. A ficha ainda não foi aberta.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Reunião diária não ocorreu no horário correto. A reunião inicia sempre às 09hrs da manhã.", "co": "Está sendo realizada pontualmente a reunião diária.", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Segurança do trabalho", "to": "Torre F", "pav": "", "ar": "", "fv": "", "en": "Extensão no chão (terceirizada GB).", "co": "A extensão foi levantada e presa no suporte da parede.", "re": "Juliana Macario Silva", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-01", "tr": "Condições de início", "to": "Torre F", "pav": "Pavimento 3 - Apto 306", "ar": "", "fv": "FVS.011.2", "en": "Proteger o contrapiso.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-01", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 1 - Apto 107", "ar": "", "fv": "FVS.025.1", "en": "Ficha com itens sem acompanhamento: posicionamento, fixação e se a distribuição/instalação do sistema está de acordo com o projeto.", "co": "FVS atualizada.", "re": "Inaldo Gomes", "pz": "2026-06-04", "ob": ""}, {"d": "2026-06-02", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "A reunião diária não foi realizada hoje.", "co": "Está acontecendo diariamente a reunião.", "re": "Renan Lyra", "pz": "2026-06-03", "ob": ""}, {"d": "2026-06-02", "tr": "", "to": "Torre E", "pav": "Pavimento 4 - Apto 402", "ar": "", "fv": "FVS.011.2", "en": "Janela de inspeção aberta. A alvenaria deveria estar concluída para iniciar o serviço de revestimento de parede.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-02", "tr": "Documentação", "to": "", "pav": "", "ar": "", "fv": "", "en": "Atualizar pasta da obra no Inmeta.", "co": "", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.020", "en": "Ficha sem acompanhamento.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.030", "en": "Ficha sem acompanhamento. Só foi inspecionado condições de início e liberação de serviço.", "co": "FVS atualizada.", "re": "Saulo Bezerra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-06-02", "tr": "Terminalidade do serviço", "to": "Torre E", "pav": "", "ar": "Bloco E (geral)", "fv": "FVS.020", "en": "Bloco E sujo com resto de gesso.", "co": "Limpeza foi realizada.", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-02", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 303", "ar": "", "fv": "FVS.013.1", "en": "Assentamento do rodapé incorreto. A não conformidade não foi registrada no Inmeta.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-08", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.025.1", "en": "FVS desatualizada, com ramais já plugados e sem o preenchimento dos itens de teste.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 205", "ar": "", "fv": "FVS.020", "en": "Não conformidade de gesso não registrada na FVS.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 204", "ar": "", "fv": "FVS.030", "en": "FVS desatualizada; houve fitamento, porém o item se encontra sem inspeção.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 204", "ar": "", "fv": "FVS.013.1", "en": "Não houve inspeção do item da aderência da peça. Rodapé aplicado, porém sem inspeção na ficha.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2 - Apto 206", "ar": "", "fv": "FVS.027", "en": "Item de fixação do gradil e verificação dos parafusos registrado como conforme na FVS. Entretanto, o gradil é removido diariamente para recebimento de materiais.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 2", "ar": "Hall 2", "fv": "FVS.013.1", "en": "Cerâmica do hall instalada sem a abertura prévia da FVS do serviço.", "co": "", "re": "Inaldo Gomes", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-03", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 4 - Apto 408", "ar": "", "fv": "FVS.035", "en": "Ausência de acompanhamento na FVS do serviço de gás referente aos pavimentos 02, 03, 04 e térreo.", "co": "", "re": "Saulo Bezerra", "pz": "2026-06-05", "ob": ""}, {"d": "2026-06-01", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "Refeitório / carpintaria / almoxarifado", "fv": "", "en": "Colocar extintores no refeitório, carpintaria e almoxarifado.", "co": "Foi colocado extintores nos locais.", "re": "Juliana Macario Silva", "pz": "2026-06-08", "ob": ""}, {"d": "2026-06-01", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado / anexos", "fv": "", "en": "Organizar e identificar o armazenamento do almoxarifado e anexos.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "2026-06-13", "ob": ""}, {"d": "2026-05-25", "tr": "Condições de início", "to": "Torre E", "pav": "Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.020", "en": "Não foi realizado o teste da tubulação aérea, porém o forro de gesso já está em execução, contrariando as condições de início.", "co": "Foi realizado o teste!", "re": "Saulo Bezerra", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Terminalidade do serviço", "to": "Torre E", "pav": "Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.013.1", "en": "Serviço acontecendo sem proteção da cerâmica com salva-piso, podendo ocasionar danos e comprometer o acabamento final.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 3 e 4", "ar": "Hall 1", "fv": "FVS.030", "en": "Presença de umidade/mofo nas placas de drywall. A não conformidade não foi registrada na FVS.", "co": "Foi atualizado a FVS.", "re": "Saulo Bezerra", "pz": "2026-05-25", "ob": ""}, {"d": "2026-05-25", "tr": "Treinamento", "to": "", "pav": "", "ar": "", "fv": "", "en": "Estagiários e auxiliares sem treinamento de procedimentos.", "co": "Foi realizado o treinamento de auxiliares e estagiário.", "re": "Renan Lyra", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-25", "tr": "Partida de serviço", "to": "", "pav": "", "ar": "", "fv": "", "en": "Partida de serviço pendente: esquadrias, impermeabilização dos vãos, calha e gradil.", "co": "Foi realizada a partida de serviço.", "re": "Renan Lyra", "pz": "2026-06-02", "ob": ""}, {"d": "2026-05-26", "tr": "Condições de início", "to": "Torre A", "pav": "Térreo - Apto 002", "ar": "", "fv": "FVS.011.2", "en": "Caixas elétricas sem a devida proteção.", "co": "", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Planilha de produtividade sem preenchimento.", "co": "Planilha atualizada.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Reunião diária não foi realizada hoje.", "co": "Está acontecendo a reunião diariamente.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "", "to": "", "pav": "", "ar": "", "fv": "", "en": "Falta de preenchimento do RDO do dia 22/05.", "co": "RDO atualizado.", "re": "Renan Lyra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.020", "en": "Não conformidades de forro de gesso não foram registradas no Inmeta.", "co": "FVS atualizada com as não conformidades registradas no Inmeta.", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 103", "ar": "", "fv": "FVS.020", "en": "Altura do shaft e forro. Verificar!", "co": "Será colocado um complemento de shaft para alcançar o forro.", "re": "Saulo Bezerra", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 1 - Apto 103", "ar": "", "fv": "FVS.013.1", "en": "Ralo sem proteção e com acúmulo de sujeira na varanda.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-27", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 3 - Apto 302", "ar": "", "fv": "FVS.025.1", "en": "Fixação incorreta da tubulação.", "co": "Corrigido.", "re": "Inaldo Gomes", "pz": "2026-05-28", "ob": ""}, {"d": "2026-05-26", "tr": "Acompanhamento de FVS", "to": "Torre C", "pav": "Pavimento 4 - Apto 401", "ar": "", "fv": "FVS.025.1", "en": "FVS desatualizada.", "co": "FVS atualizada.", "re": "Inaldo Gomes", "pz": "2026-05-28", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Materiais sem identificação e armazenamento incorreto.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Falta FVM de material da terceirizada.", "co": "Está sendo realizada a FVM de materiais da terceirizada.", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Controle de ferramenta: falta preenchimento das datas de entrega/devolução, verificação de funcionamento e assinatura do almoxarife.", "co": "Está sendo realizada corretamente.", "re": "Welldes Carlos Da Silva", "pz": "2026-05-29", "ob": ""}, {"d": "2026-05-28", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Verificar local para o químico e solicitar a FISPQ.", "co": "Local para o químico ok. Falta apenas a FISPQ no local.", "re": "Welldes Carlos Da Silva", "pz": "2026-06-05", "ob": ""}, {"d": "2026-05-22", "tr": "Material", "to": "", "pav": "", "ar": "Pátio (armazenamento de ferragens)", "fv": "", "en": "Armações armazenadas de forma inadequada diretamente no solo e materiais desorganizados.", "co": "Removida e reorganizada ~85% das ferragens para local adequado. Entretanto, ainda permanecem armações no local original de forma desorganizada.", "re": "Welldes Carlos Da Silva", "pz": "2026-05-26", "ob": ""}, {"d": "2026-05-22", "tr": "Material", "to": "Torre E", "pav": "Térreo - Apto 003", "ar": "", "fv": "FVS.013.1", "en": "Material armazenado diretamente sobre a cerâmica sem proteção de piso, podendo ocasionar danos e comprometer o acabamento.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-25", "ob": ""}, {"d": "2026-05-22", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Térreo", "ar": "Hall de Entrada 2", "fv": "FVS.025.1.1", "en": "Hall 01 e 02: serviço de barrilete sem acompanhamento.", "co": "Foi atualizada a ficha.", "re": "Saulo Bezerra", "pz": "2026-05-22", "ob": "FVS no relatório: FVS.025.1.1 - Instalação do Barrilete"}, {"d": "2026-05-22", "tr": "Acompanhamento de FVS", "to": "Torre F", "pav": "Pavimento 2 e 4", "ar": "", "fv": "FVS.6.3", "en": "Segregação próximo à tubulação. O serviço de massa gesso já iniciou no local.", "co": "", "re": "Inaldo Gomes", "pz": "2026-05-26", "ob": "Também: Condições de início não respeitada"}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 301", "ar": "", "fv": "FVS.009.1", "en": "Ficha sem acompanhamento e com não conformidade em aberto desde dezembro de 2025.", "co": "Ficha atualizada!", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 301; Pavimento 1 - Apto 104", "ar": "", "fv": "FVS.030", "en": "Ficha de drywall sem acompanhamento.", "co": "Ficha atualizada!", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 3 - Apto 302", "ar": "", "fv": "FVS.013.1", "en": "Identificada a aplicação do rodapé, porém sem o devido registro de inspeção no Inmeta.", "co": "Ficha atualizada!", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "", "to": "Torre E", "pav": "Pavimento 3 - Apto 301 e 303", "ar": "", "fv": "FVS.025.1", "en": "Ralo coberto de massa na varanda.", "co": "", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Condições de início", "to": "Torre E", "pav": "Pavimento 3 - Apto 304", "ar": "", "fv": "FVS.011.2", "en": "Corte para passagem de SPDA. O corte deve estar devidamente fechado.", "co": "", "re": "Saulo Bezerra", "pz": "", "ob": ""}, {"d": "2026-05-21", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Pavimento 1 - Apto 102", "ar": "", "fv": "FVS.013.1", "en": "Falta de registro de FVS na etapa de assentamento de cerâmica, rodapés e aderência das peças após a cura.", "co": "", "re": "Inaldo Gomes", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Caixa de ar condicionado - sem FVM: almoxarife não recebeu a nota fiscal do fornecedor.", "co": "", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Treinamento", "to": "", "pav": "", "ar": "", "fv": "", "en": "Almoxarife Welldes sem treinamento de integração de segurança do trabalho.", "co": "Foi realizado o treinamento de integração.", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Documentação", "to": "", "pav": "", "ar": "", "fv": "", "en": "Almoxarife Welldes está sem o ASO anexado na documentação.", "co": "Foi anexado o ASO no sistema.", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Desmoldante vencido!", "co": "", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Sem sinalização de segurança, sem proteção adequada da área e sem disponibilização da FISPQ no local.", "co": "", "re": "Weslley Cauã Ferreira da Costa", "pz": "", "ob": ""}, {"d": "2026-05-20", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado", "fv": "", "en": "Armazenamento inadequado de produto químico, sem contenção para vazamentos.", "co": "Relocado o armazenamento dos químicos para ambiente fechado e com contenção.", "re": "Welldes Carlos Da Silva", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo", "ar": "Hall de entrada 1", "fv": "FVS.030", "en": "Presença de infiltração na parede em drywall, com formação de mofo e manchas de umidade.", "co": "", "re": "Saulo Bezerra Pedrosa", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Ausência de revestimento cerâmico na varanda e no quarto 01, não sendo registrada a pendência na FVS.", "co": "Cerâmica concluída no apartamento.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Executado em desconformidade com o projeto", "to": "Torre C", "pav": "Térreo - Apto 003", "ar": "", "fv": "FVS.024.1", "en": "Verificar todos os apartamentos: caixinha elétrica em local incorreto, encoberta por massa de gesso, recuada e desalinhada/torta.", "co": "Mapeadas todas as caixinhas elétricas tortas ou em lugares errados. A pendência está sendo tratada.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": "Também: Falha no acompanhamento de FVS"}, {"d": "2026-05-19", "tr": "Segurança do trabalho", "to": "", "pav": "", "ar": "", "fv": "", "en": "Ausência de placas de identificação dos apartamentos.", "co": "", "re": "Renan Lyra", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Pavimento 1 - Apto 101", "ar": "", "fv": "FVS.025.1", "en": "Todos os apartamentos do Bloco A: preenchimento incorreto da FVS de Instalações hidrossanitárias.", "co": "Foi efetuada a revisão completa das fichas.", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Material", "to": "", "pav": "", "ar": "Almoxarifado (esquadrias)", "fv": "", "en": "Armazenar esquadria conforme PCM.", "co": "", "re": "Paulo Martins", "pz": "", "ob": ""}, {"d": "2026-05-19", "tr": "Acompanhamento de FVS", "to": "Torre A", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Rodapé e soleira executados, porém o item não foi registrado na FVS.", "co": "", "re": "Inaldo Gomes de Oliveira", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.009.1", "en": "FVS sem acompanhamento. Deveria estar finalizada pois o serviço de massa gesso já foi iniciado.", "co": "FVS do apartamento finalizada. Porém é preciso finalizar as fichas dos demais apartamentos do bloco E.", "re": "Felipe José Coriolano Correia", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.011.2", "en": "FVS sem acompanhamento. Falta preenchimento do item alinhamento.", "co": "FVS atualizada.", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.013.1", "en": "Cerâmica danificada e sem registro da NC no Inmeta. Rodapé já instalado, porém o item não foi inspecionado.", "co": "FVS atualizada.", "re": "Felipe José Coriolano Correia", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.024.1", "en": "FVS sem acompanhamento. Itens sem inspeção!", "co": "Sim.", "re": "Laison Souza Batista da Silva", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Condições de início", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.011.2", "en": "Rasgo na alvenaria para passagem do SPDA. A alvenaria deve estar concluída para início do serviço de massa gesso.", "co": "", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.030", "en": "FVS sem acompanhamento.", "co": "Sim.", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}, {"d": "2026-05-15", "tr": "Acompanhamento de FVS", "to": "Torre E", "pav": "Térreo - Apto 001", "ar": "", "fv": "FVS.031", "en": "Item de base de shaft inspecionado; no entanto, a base de shaft não se encontra fixada.", "co": "", "re": "Pedro Klaes Gomes dos Anjos", "pz": "", "ob": ""}];
 
 async function importarUBCUrbanCandeias(){
   const OBRA='UBC - Urban Candeias';
-  const REG='Nicolly Roberta Santana de Lima';
+  const REG=REG_NOVO; // 'Nicolly Roberta'
   if(!StorageAPI || StorageAPI.mode!=='sheets'){
     if(!confirm('Atenção: o app não está conectado ao Google Sheets. Importar mesmo assim?')) return;
   }
@@ -1688,7 +1728,7 @@ async function importarUBCUrbanCandeias(){
       tipo: (UBC_TIPO_MAP[d.tr] || d.tr || ''), servico: ubcPes(d.fv),
       registradoPor: REG, descNC: d.en||'', fotoNC:'',
       responsavel: d.re||'', responsavelTel: (findResp(d.re)||{}).tel || '',
-      prazo: d.pz||'', status: (d.co && d.co.trim()) ? 'Aguardando Validação da Qualidade' : 'Aberta',
+      prazo: d.pz||'', status: (d.co && d.co.trim()) ? 'Aguardando validação' : 'Aberta',
       dataRes:'', descCorr: d.co||'', fotoCorr:'', obs: obsParts.join(' | '),
       criadoEm: new Date().toISOString(), atualizadoEm: new Date().toISOString()
     };
@@ -1703,6 +1743,100 @@ async function importarUBCUrbanCandeias(){
   return {novos, pulados, falhas};
 }
 
+/* ============================================================
+   FUNÇÕES ADMINISTRATIVAS (apenas COORDENADOR/ANALISTA/ESTAGIARIO)
+   ============================================================ */
+
+/* #7 — Remover registros duplicados da obra UBC - Urban Candeias.
+   Duplicidade = mesma obra + data + tipo + torre + pav/apto + descrição da NC.
+   Mantém o registro mais completo: 1) com foto, 2) com correção, 3) com serviço, 4) mais recente. */
+async function removerDuplicidadesUBC(){
+  if(!can('admin')){ toast('Sem permissão para esta ação.','err'); return; }
+  if(!confirm('Deseja remover registros duplicados da obra UBC - Urban Candeias? Essa ação não poderá ser desfeita.')) return;
+  const norm = v => (v||'').trim().toLowerCase();
+  const chave = r => [norm(r.obra),norm(r.dataId),norm(r.tipo),norm(torreOf(r)),norm(pavOf(r)),norm(r.descNC)].join('|');
+  const score = r => (r.fotoNC||r.fotoCorr?8:0) + (r.descCorr&&r.descCorr.trim()?4:0) + (r.servico&&r.servico.trim()?2:0);
+  const recente = r => (r.atualizadoEm||r.criadoEm||'');
+  const ubc = STATE.records.filter(r=>(r.obra||'').trim()==='UBC - Urban Candeias');
+  const grupos = {};
+  ubc.forEach(r=>{ (grupos[chave(r)] = grupos[chave(r)]||[]).push(r); });
+  const remover = [];
+  Object.values(grupos).forEach(g=>{
+    if(g.length<2) return;
+    g.sort((a,b)=> score(b)-score(a) || recente(b).localeCompare(recente(a)) );
+    remover.push(...g.slice(1)); // mantém o 1º (mais completo)
+  });
+  if(!remover.length){ toast('Nenhuma duplicidade encontrada na obra UBC.','ok'); alert('Nenhum registro duplicado encontrado na obra UBC - Urban Candeias.'); return; }
+  let ok=0, fail=0;
+  for(const r of remover){ try{ await StorageAPI.remove(r.id); ok++; }catch(e){ fail++; } }
+  try{ await refresh(); }catch(e){}
+  toast(`Duplicidades UBC: ${ok} removida(s)${fail?`, ${fail} falha(s)`:''}.`, fail?'err':'ok');
+  alert(`Remoção de duplicidades — UBC - Urban Candeias\n\nRegistros duplicados removidos: ${ok}` + (fail?`\nFalhas: ${fail}`:''));
+  return {removidos:ok, falhas:fail};
+}
+
+/* #8 — Padroniza "Nicolly Roberta Santana de Lima" -> "Nicolly Roberta" na base (grava no Sheets). */
+async function padronizarRegistradoPor(){
+  if(!can('admin')){ toast('Sem permissão para esta ação.','err'); return; }
+  const alvo = STATE.records.filter(r=>r.registradoPor===REG_ANTIGO);
+  if(!alvo.length){ toast('Nenhum registro a padronizar.','ok'); return {atualizados:0}; }
+  let ok=0, fail=0;
+  for(const r of alvo){
+    try{ await StorageAPI.upsert(Object.assign({}, r, {registradoPor:REG_NOVO, atualizadoEm:new Date().toISOString()})); ok++; }
+    catch(e){ fail++; }
+  }
+  try{ await refresh(); }catch(e){}
+  toast(`"Registrado por" padronizado em ${ok} registro(s).`, fail?'err':'ok');
+  return {atualizados:ok, falhas:fail};
+}
+
+/* #9 — Move serviço/PES que ficou na observação para o campo Serviço e limpa a observação. */
+function pesDaObs(texto){
+  if(!texto) return '';
+  // PES explícito: "PES 025.1" / "PES 013.1"
+  let m = texto.match(/PES\s*0?\d{1,3}(?:\.\d+)?/i);
+  if(m){ const cod = m[0].replace(/\s+/g,' ').toUpperCase().replace('PES','PES ').replace(/\s+/g,' ').trim();
+    const num = (cod.match(/[\d.]+/)||[''])[0];
+    const hit = SERVICOS.find(s=>s.startsWith('PES '+num+' ')||s.startsWith('PES '+num+'-')||s.replace(/\s/g,'').startsWith('PES'+num));
+    if(hit) return hit;
+  }
+  // FVS: "FVS.025.1.1", "FVS.025.1", "FVS.011.2" -> PES correspondente
+  m = texto.match(/FVS\.?\s*\d+(?:\.\d+)*/i);
+  if(m){ const fv = m[0].toUpperCase().replace(/\s+/g,''); return ubcPes(fv.replace('FVS','FVS')); }
+  return '';
+}
+function limpaObsServico(texto){
+  if(!texto) return '';
+  return texto.split('|').map(s=>s.trim())
+    .filter(s => s && !/^FVS\b/i.test(s) && !/^PES\b/i.test(s) && !/^Serviço\s*\/?\s*FVS/i.test(s) && !/^FVS no relatório/i.test(s) && !/^Serviço:/i.test(s))
+    .join(' | ');
+}
+async function corrigirServicoDasObservacoes(){
+  if(!can('admin')){ toast('Sem permissão para esta ação.','err'); return; }
+  const alvo = STATE.records.filter(r=>(!r.servico||!r.servico.trim()) && pesDaObs(r.obs));
+  if(!alvo.length){ toast('Nenhuma observação com serviço a corrigir.','ok'); alert('Nenhum serviço/PES encontrado nas observações para mover.'); return {atualizados:0}; }
+  let ok=0, fail=0;
+  for(const r of alvo){
+    const pes = pesDaObs(r.obs);
+    try{ await StorageAPI.upsert(Object.assign({}, r, {servico:pes, obs:limpaObsServico(r.obs), atualizadoEm:new Date().toISOString()})); ok++; }
+    catch(e){ fail++; }
+  }
+  try{ await refresh(); }catch(e){}
+  toast(`Serviço movido da observação em ${ok} registro(s).`, fail?'err':'ok');
+  alert(`Correção de serviço nas observações\n\nRegistros atualizados: ${ok}` + (fail?`\nFalhas: ${fail}`:''));
+  return {atualizados:ok, falhas:fail};
+}
+
+function applyPerfil(){
+  // (rodapé não exibe mais o perfil; permissões continuam ativas via can())
+  // aba Relatórios só para quem tem permissão
+  const relBtn = document.querySelector('.nt[data-tab="rel"]'); if(relBtn) relBtn.style.display = can('relatorios') ? '' : 'none';
+  // opção "Resolvida" no formulário só para quem pode validar
+  const optR=$('#opt-status-resolvida'), hint=$('#hint-status');
+  if(optR){ optR.style.display = can('validar') ? '' : 'none'; optR.disabled = !can('validar'); }
+  if(hint) hint.style.display = can('validar') ? 'none' : 'block';
+}
+
 function initStoreBadge(){
   const b=$('#storeBadge'),t=$('#storeTxt');
   if(StorageAPI.mode==='sheets'){ b.className='store-badge local'; t.textContent='Conectado ao Google Sheets'; }
@@ -1714,6 +1848,8 @@ function initStoreBadge(){
   try { await ensureTeamSeed(); } catch(e){}
   try { await ensureObrasSeed(); } catch(e){}
   await refresh();
+  applyPerfil(); // aplica permissões (Relatórios / opção Resolvida) após o DOM carregar
+  renderDashboard(); // aba inicial é o Dashboard
   const params = new URLSearchParams(location.search);
   if(params.get('acao')==='corrigir' && params.get('id')){ enterFixMode(params.get('id')); }
 })();
@@ -1744,10 +1880,8 @@ function initStoreBadge(){
    — mesma interface list/upsert/remove.
    ===================================================================== */
 </script>
-<!-- BOTÃO TEMPORÁRIO: importação única das NCs do Urban Candeias. Remover após usar. -->
-<button id="btnImportUBC" onclick="importarUBCUrbanCandeias()"
- style="position:fixed;right:14px;bottom:14px;z-index:9999;background:#1850a0;color:#fff;border:none;
- border-radius:10px;padding:12px 16px;font:600 13px/1 'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;">
- ⬆ Importar NCs UBC (uso único)</button>
+<!-- As funções administrativas (importarUBCUrbanCandeias, removerDuplicidadesUBC,
+     corrigirServicoDasObservacoes, padronizarRegistradoPor) continuam disponíveis
+     no código e podem ser executadas pelo console do navegador. Sem botão na tela. -->
 </body>
 </html>
