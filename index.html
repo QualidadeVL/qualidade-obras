@@ -439,6 +439,7 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasada{color:var(
   <div class="sec-eyebrow">Filtros</div>
   <div class="card pad mb">
     <div class="filters">
+      <div class="field"><label>Item nº</label><input id="ft-item" type="number" inputmode="numeric" min="1" placeholder="Ex.: 227"></div>
       <div class="field"><label>De</label><input id="ft-de" type="date"></div>
       <div class="field"><label>Até</label><input id="ft-ate" type="date"></div>
       <div class="field"><label>Obra</label><select id="ft-obra"><option value="">Todas</option></select></div>
@@ -514,6 +515,7 @@ table.rep .st-Aguardando{color:var(--violet);} table.rep .st-Atrasada{color:var(
   <div class="sec-eyebrow no-print">Filtros do relatório</div>
   <div class="card pad mb rel-controls no-print">
     <div class="filters">
+      <div class="field"><label>Item nº</label><input id="rel-item" type="number" inputmode="numeric" min="1" placeholder="Ex.: 227"></div>
       <div class="field"><label>De</label><input id="rel-de" type="date"></div>
       <div class="field"><label>Até</label><input id="rel-ate" type="date"></div>
       <div class="field"><label>Obra</label><select id="rel-obra"><option value="">Todas</option></select></div>
@@ -913,7 +915,7 @@ function renderPhotoPreview(prevId, key){
 /* ---------------- formulário ---------------- */
 function initForm(){
   $('#f-tipo').innerHTML = '<option value="">Selecione…</option>' + TIPOS.map(t=>`<option>${t}</option>`).join('');
-  $('#f-servico').innerHTML = '<option value="">Selecione o procedimento…</option>' + SERVICOS.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('#f-servico').innerHTML = '<option value="">Selecione o procedimento…</option><option value="-">-  (NC não relacionada a nenhum PES)</option>' + SERVICOS.map(s=>`<option>${esc(s)}</option>`).join('');
   $('#f-area').innerHTML = '<option value="">—</option>' + AREAS_SUG.map(a=>`<option>${esc(a)}</option>`).join('');
   $('#f-pav-num').innerHTML = '<option value="">Selecione…</option>' + PAVIMENTOS.map(p=>`<option>${p}</option>`).join('');
   $('#f-dataId').value = todayISO();
@@ -949,8 +951,13 @@ function clearForm(){
 }
 async function saveRecord(){
   const dataId=$('#f-dataId').value, obra=$('#f-obra').value, tipo=$('#f-tipo').value,
-        servico=$('#f-servico').value, registradoPor=$('#f-registrado').value,
-        descNC=$('#f-descNC').value.trim(), status=$('#f-status').value;
+        servico=$('#f-servico').value, descNC=$('#f-descNC').value.trim(), status=$('#f-status').value;
+  const existing = STATE.editingId ? STATE.records.find(r=>r.id===STATE.editingId) : null;
+  // Rede de segurança: "Registrado por" nunca pode ficar vazio na edição.
+  // Se o select voltar vazio, mantém exatamente o valor original do registro.
+  let registradoPor = $('#f-registrado').value;
+  if(!registradoPor && existing) registradoPor = existing.registradoPor || '';
+
   if(normStatus(status)==='Resolvida' && !can('validar')){ toast('Seu perfil não pode marcar a NC como Resolvida.','err'); return; }
   if(!dataId){ toast('Informe a data da identificação.','err'); return; }
   if(!obra){ toast('Selecione a obra.','err'); return; }
@@ -959,7 +966,6 @@ async function saveRecord(){
   if(!descNC){ toast('Descreva a NC encontrada.','err'); return; }
   if(!registradoPor){ toast('Informe quem registrou a NC.','err'); return; }
   const now = new Date().toISOString();
-  const existing = STATE.editingId ? STATE.records.find(r=>r.id===STATE.editingId) : null;
   const item = existing && existing.item ? existing.item : nextItemNumber();
   let pav = compoePav($('#f-pav-num').value, $('#f-apto').value);
   if(!pav && existing) pav = existing.pavimentoApartamento || existing.local || ''; // mantém dado antigo na edição
@@ -979,11 +985,26 @@ async function saveRecord(){
   else { toast(STATE.editingId ? 'Registro atualizado.' : 'Registro salvo.', 'ok'); }
   clearForm(); await refresh(); go('list');
 }
+/* Define o valor de um <select> preservando o texto salvo:
+   se o valor não existir nas opções, cria uma option temporária e a seleciona.
+   Garante que campos como "Registrado por" nunca fiquem vazios na edição. */
+function setSelectValuePreservingOption(selectId, value){
+  const sel = $('#'+selectId); if(!sel) return;
+  const v = (value==null) ? '' : String(value);
+  if(v===''){ sel.value=''; return; }
+  if(![...sel.options].some(o => o.value === v)){
+    const opt = document.createElement('option'); opt.value = v; opt.textContent = v; sel.appendChild(opt);
+  }
+  sel.value = v;
+}
+
 function editRecord(id){
   const r = STATE.records.find(x=>x.id===id); if(!r) return;
   STATE.editingId = id;
-  $('#f-item').value=r.item??''; $('#f-dataId').value=r.dataId||''; $('#f-obra').value=r.obra||'';
-  $('#f-registrado').value=r.registradoPor||''; $('#f-servico').value=r.servico||'';
+  $('#f-item').value=r.item??''; $('#f-dataId').value=r.dataId||'';
+  setSelectValuePreservingOption('f-obra', r.obra||'');
+  setSelectValuePreservingOption('f-registrado', regOf(r));          // nunca fica vazio
+  setSelectValuePreservingOption('f-servico', pesLabel(r.servico)||'');
   fillTorreSelect(r.obra||'', r.torre||'');
   // tenta decompor "Pavimento 04 - Apto 406" nos selects; se não der, mantém o texto ao salvar
   const pavTxt = pavOf(r); let pavNum='', apto='';
@@ -991,9 +1012,9 @@ function editRecord(id){
   else if(/térreo|terreo/i.test(pavTxt)) pavNum='Térreo'; else if(/coberta/i.test(pavTxt)) pavNum='Coberta';
   m = pavTxt.match(/ap(?:to|t)?\.?\s*(\d{3})/i); if(m) apto=m[1];
   $('#f-pav-num').value = PAVIMENTOS.includes(pavNum)?pavNum:''; fillAptoSelect($('#f-pav-num').value, apto);
-  $('#f-area').value=r.areaExterna||'';
-  $('#f-tipo').value=r.tipo||''; $('#f-descNC').value=r.descNC||'';
-  $('#f-responsavel').value=r.responsavel||''; $('#f-responsavelTel').value=r.responsavelTel||'';
+  setSelectValuePreservingOption('f-area', r.areaExterna||'');
+  setSelectValuePreservingOption('f-tipo', r.tipo||''); $('#f-descNC').value=r.descNC||'';
+  setSelectValuePreservingOption('f-responsavel', r.responsavel||''); $('#f-responsavelTel').value=r.responsavelTel||'';
   $('#f-prazo').value=r.prazo||''; $('#f-status').value=normStatus(r.status); $('#f-dataRes').value=r.dataRes||'';
   $('#f-descCorr').value=r.descCorr||''; $('#f-obs').value=r.obs||'';
   photos.fotoNC=r.fotoNC||null; photos.fotoCorr=r.fotoCorr||null;
@@ -1020,10 +1041,12 @@ function askDelete(id){
 
 /* ---------------- filtros + lista ---------------- */
 function getFiltered(){
-  const de=$('#ft-de').value, ate=$('#ft-ate').value, obra=$('#ft-obra').value,
+  const item=$('#ft-item').value.trim(),
+        de=$('#ft-de').value, ate=$('#ft-ate').value, obra=$('#ft-obra').value,
         torre=$('#ft-torre').value, pav=$('#ft-pav').value.trim().toLowerCase(), area=$('#ft-area').value.trim().toLowerCase(),
         resp=$('#ft-resp').value, reg=$('#ft-registrado').value, tipo=$('#ft-tipo').value, serv=$('#ft-servico').value, st=$('#ft-status').value;
   return STATE.records.filter(r=>{
+    if(item && parseInt(r.item,10) !== parseInt(item,10)) return false;
     if(de && (!r.dataId || r.dataId < de)) return false;
     if(ate && (!r.dataId || r.dataId > ate)) return false;
     if(obra && r.obra !== obra) return false;
@@ -1033,7 +1056,7 @@ function getFiltered(){
     if(resp && r.responsavel !== resp) return false;
     if(reg && regOf(r) !== reg) return false;
     if(tipo && r.tipo !== tipo) return false;
-    if(serv && r.servico !== serv) return false;
+    if(serv && pesLabel(r.servico) !== serv) return false;
     if(st && situacao(r) !== st) return false;
     return true;
   }).sort((a,b)=> (b.dataId||'').localeCompare(a.dataId||'') || (b.criadoEm||'').localeCompare(a.criadoEm||''));
@@ -1090,7 +1113,7 @@ function renderList(){
   }).join('');
   box.querySelectorAll('img[data-img]').forEach(im=> im.onclick=()=>openLightbox(im.dataset.img));
 }
-function clearFilters(){ ['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).value=''); renderList(); }
+function clearFilters(){ ['ft-item','ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).value=''); renderList(); }
 
 /* ---------------- painel ---------------- */
 let charts = {};
@@ -1167,7 +1190,7 @@ function renderTop3TiposGeral(recs){
 }
 function renderTop3Serv(recs){
   const box=$('#top3Serv'); if(!box) return;
-  const top=tally(recs.filter(r=>r.servico),r=>pesLabel(r.servico)).slice(0,3);
+  const top=tally(recs.filter(r=>r.servico && r.servico!=='-'),r=>pesLabel(r.servico)).slice(0,3);
   box.innerHTML = top.length ? rankRows(top) : '<p class="muted" style="font-size:13px">Sem serviços informados.</p>';
 }
 /* Blocos por obra: tudo de cada obra junto (KPIs + status + torre + tops) */
@@ -1179,7 +1202,7 @@ function renderObrasBlocks(recs, C){
   const rk=(a,t)=> a.length?rankRows(a):`<p class="muted" style="font-size:13px">${t}</p>`;
   box.innerHTML = ordered.map(([o,arr],i)=>{
     const nTorre=tally(arr,r=>torreOf(r)).length; const hT=Math.max(130,nTorre*32+34);
-    const t3t=topTipos(arr,3), t3s=tally(arr.filter(r=>r.servico),r=>pesLabel(r.servico)).slice(0,3), t3r=tally(arr.filter(r=>r.responsavel),r=>r.responsavel).slice(0,3);
+    const t3t=topTipos(arr,3), t3s=tally(arr.filter(r=>r.servico && r.servico!=='-'),r=>pesLabel(r.servico)).slice(0,3), t3r=tally(arr.filter(r=>r.responsavel),r=>r.responsavel).slice(0,3);
     return `<div class="card pad mb obra-block">
       <div class="ct obra-h">Obra: ${esc(o)}</div><div class="ct-sub">${arr.length} não conformidade${arr.length>1?'s':''}</div>
       ${kpiGridHtml(statsOf(arr))}
@@ -1354,16 +1377,18 @@ function go(tab){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $$('.nt').forEach(b=> b.onclick=()=>go(b.dataset.tab));
-['ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).addEventListener('input',renderList));
+['ft-item','ft-de','ft-ate','ft-obra','ft-torre','ft-pav','ft-area','ft-resp','ft-registrado','ft-tipo','ft-servico','ft-status'].forEach(id=>$('#'+id).addEventListener('input',renderList));
 $('#ft-clear').onclick=clearFilters;
 
 /* ---------------- relatórios ---------------- */
 function relFiltered(){
-  const de=$('#rel-de').value, ate=$('#rel-ate').value, tipo=$('#rel-tipo').value, serv=$('#rel-servico').value,
+  const item=$('#rel-item').value.trim(),
+        de=$('#rel-de').value, ate=$('#rel-ate').value, tipo=$('#rel-tipo').value, serv=$('#rel-servico').value,
         resp=$('#rel-resp').value, reg=$('#rel-registrado').value, obra=$('#rel-obra').value, torre=$('#rel-torre').value,
         pav=$('#rel-pav').value.trim().toLowerCase(), area=$('#rel-area').value.trim().toLowerCase(),
         sit=$('#rel-sit').value;
   return STATE.records.filter(r=>{
+    if(item && parseInt(r.item,10) !== parseInt(item,10)) return false;
     if(de && (!r.dataId || r.dataId<de)) return false;
     if(ate && (!r.dataId || r.dataId>ate)) return false;
     if(tipo && r.tipo!==tipo) return false;
@@ -1380,6 +1405,7 @@ function relFiltered(){
 }
 function describeFilters(){
   const p=[]; const v=id=>$('#'+id).value;
+  if(v('rel-item')) p.push('Item nº '+v('rel-item'));
   if(v('rel-de')||v('rel-ate')) p.push('Período: '+(v('rel-de')?fmtBR(v('rel-de')):'…')+' a '+(v('rel-ate')?fmtBR(v('rel-ate')):'…'));
   if(v('rel-obra')) p.push('Obra: '+v('rel-obra'));
   if(v('rel-torre')) p.push('Torre: '+v('rel-torre'));
@@ -1414,7 +1440,7 @@ function renderReport(){
 
   const tipoRank=tally(rows,r=>r.tipo||'(sem tipo)');
   const respRank=tally(rows.filter(r=>r.responsavel),r=>r.responsavel);
-  const servRank=tally(rows.filter(r=>r.servico),r=>pesLabel(r.servico));
+  const servRank=tally(rows.filter(r=>r.servico && r.servico!=='-'),r=>pesLabel(r.servico));
   const ranks = `<div class="g2 mb">
     <div class="card pad"><div class="ct">Ranking por tipo de NC</div>${rankRows(tipoRank)}</div>
     <div class="card pad"><div class="ct">Ranking por responsável</div>${respRank.length?rankRows(respRank):'<p class="muted" style="font-size:13px">—</p>'}</div>
@@ -1442,8 +1468,8 @@ function renderReport(){
   $('#relOut').innerHTML = kpis + ranks + table;
 }
 function initRel(){
-  ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).addEventListener('input',renderReport));
-  $('#rel-clear').onclick=()=>{ ['rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).value=''); renderReport(); };
+  ['rel-item','rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).addEventListener('input',renderReport));
+  $('#rel-clear').onclick=()=>{ ['rel-item','rel-de','rel-ate','rel-obra','rel-torre','rel-pav','rel-area','rel-resp','rel-registrado','rel-tipo','rel-servico','rel-sit'].forEach(id=>$('#'+id).value=''); renderReport(); };
   $$('.rel-quick [data-q]').forEach(b=> b.onclick=()=>{
     const q=b.dataset.q;
     if(q==='noprazo'){ $('#rel-sit').value='Aberta (dentro do prazo)'; }
@@ -1752,12 +1778,17 @@ async function importarUBCUrbanCandeias(){
    Mantém o registro mais completo: 1) com foto, 2) com correção, 3) com serviço, 4) mais recente. */
 async function removerDuplicidadesUBC(){
   if(!can('admin')){ toast('Sem permissão para esta ação.','err'); return; }
-  if(!confirm('Deseja remover registros duplicados da obra UBC - Urban Candeias? Essa ação não poderá ser desfeita.')) return;
-  const norm = v => (v||'').trim().toLowerCase();
-  const chave = r => [norm(r.obra),norm(r.dataId),norm(r.tipo),norm(torreOf(r)),norm(pavOf(r)),norm(r.descNC)].join('|');
-  const score = r => (r.fotoNC||r.fotoCorr?8:0) + (r.descCorr&&r.descCorr.trim()?4:0) + (r.servico&&r.servico.trim()?2:0);
+  // normalização: minúsculas, sem acentos, sem espaços extras; vazio = vazio
+  const norm = v => (v==null?'':String(v)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,' ').toLowerCase();
+  // chave de duplicidade: obra+data+tipo+torre+pav/apto+área externa+serviço+descrição+registrado por
+  const chave = r => [norm(r.obra),norm(r.dataId),norm(r.tipo),norm(torreOf(r)),norm(pavOf(r)),
+                      norm(r.areaExterna),norm(pesLabel(r.servico)),norm(r.descNC),norm(regOf(r))].join('|');
+  // prioridade p/ manter o mais completo: 1) com correção, 2) com serviço, 3) com responsável, 4) mais recente
+  const score = r => (r.descCorr&&r.descCorr.trim()?8:0)
+                   + (r.servico&&r.servico.trim()&&r.servico.trim()!=='-'?4:0)
+                   + (r.responsavel&&r.responsavel.trim()?2:0);
   const recente = r => (r.atualizadoEm||r.criadoEm||'');
-  const ubc = STATE.records.filter(r=>(r.obra||'').trim()==='UBC - Urban Candeias');
+  const ubc = STATE.records.filter(r=>norm(r.obra)===norm('UBC - Urban Candeias'));
   const grupos = {};
   ubc.forEach(r=>{ (grupos[chave(r)] = grupos[chave(r)]||[]).push(r); });
   const remover = [];
@@ -1766,14 +1797,18 @@ async function removerDuplicidadesUBC(){
     g.sort((a,b)=> score(b)-score(a) || recente(b).localeCompare(recente(a)) );
     remover.push(...g.slice(1)); // mantém o 1º (mais completo)
   });
-  if(!remover.length){ toast('Nenhuma duplicidade encontrada na obra UBC.','ok'); alert('Nenhum registro duplicado encontrado na obra UBC - Urban Candeias.'); return; }
+  if(!remover.length){ toast('Nenhuma duplicidade encontrada na obra UBC.','ok'); alert('Nenhum registro duplicado encontrado na obra UBC - Urban Candeias.'); return {removidos:0}; }
+  if(!confirm(`Foram encontrados ${remover.length} registro(s) duplicado(s) da obra UBC - Urban Candeias.\n\nDeseja remover essas duplicidades? Essa ação não poderá ser desfeita.`)) return {removidos:0,cancelado:true};
   let ok=0, fail=0;
   for(const r of remover){ try{ await StorageAPI.remove(r.id); ok++; }catch(e){ fail++; } }
-  try{ await refresh(); }catch(e){}
+  try{ await refresh(); }catch(e){}      // atualiza a aba Registros
+  try{ renderDashboard(); }catch(e){}    // atualiza o Dashboard
   toast(`Duplicidades UBC: ${ok} removida(s)${fail?`, ${fail} falha(s)`:''}.`, fail?'err':'ok');
   alert(`Remoção de duplicidades — UBC - Urban Candeias\n\nRegistros duplicados removidos: ${ok}` + (fail?`\nFalhas: ${fail}`:''));
   return {removidos:ok, falhas:fail};
 }
+/* alias solicitado (mesma lógica) */
+window.removerDuplicidadesUrbanCandeias = removerDuplicidadesUBC;
 
 /* #8 — Padroniza "Nicolly Roberta Santana de Lima" -> "Nicolly Roberta" na base (grava no Sheets). */
 async function padronizarRegistradoPor(){
